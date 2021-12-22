@@ -2,11 +2,14 @@ function SourceManager(){
     this.sources = [];
 
     this.addSource = function(){
-        
-    }
 
-    // observer pattern, gets called by the observable
-    this.notify = function(timestamps, values){
-        this.updatePending = true;
     };
+
+    this.getDescriptions = function(){
+        let currentSource = 0;
+
+        if(sources[currentSource].hasDescription == false && sources[currentSource].waitingForData == false){
+            sources[currentSource].getDescription();
+        }
+    }
 };

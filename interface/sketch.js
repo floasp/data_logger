@@ -61,13 +61,15 @@ function setup() {
     manager.addWidget(gwidget3, 2, 2)
     gwidget2.setContinousSpline(true);
 
+    server_url = "http://asperger.home";
+
     // dataSource2 = new DataSource("http://asperger.home/api/getValues.php?sensorID=45&filter=top&top=9");
-    dataSource2 = new DataSource();
+    dataSource2 = new DataSource(server_url);
     dataSource2.setupSource(45, "top", "top=9");
     dataSource2.addObserver(gwidget2, 0);
 
     // dataSource3 = new DataSource("http://asperger.home/api/getValues.php?sensorID=44&filter=top&top=4");
-    dataSource3 = new DataSource();
+    dataSource3 = new DataSource(server_url);
     dataSource3.setupSource(44, "top", "top=4");
     dataSource3.addObserver(gwidget3, 0);
 
@@ -135,28 +137,8 @@ function draw() {
         default:
             break;
     }
-
-    // TODO: get data
-    // set updates
 };
 
 function windowResized() {
     resizeCanvas(windowWidth - 20, windowHeight - 20);
 };
-
-// function dataReceived(data){
-//     //console.log(data);
-//     data_array = data.split("</br>")
-//     var xData = [];
-//     var yData = [];
-//     for(var i = 0; i < data_array.length - 1; i++){
-//         var obj = JSON.parse(data_array[i]);
-//         // console.log(Object.keys(obj).length);
-//         // console.log(obj);
-//         // console.log(obj["value0"]);
-//         xData[i] = obj.timestamp;
-//         yData[i] = int(obj.value0);
-//     }
-//
-//     this.gw2Data = [xData, yData];
-// };

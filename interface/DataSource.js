@@ -1,19 +1,36 @@
-function DataSource(){
-    this.source = "";
+function DataSource(url){
+    // source url for the getValues call
+    this.datasource = "";
+    // source url for the getSensor and getDatatypes call
     this.descriptionCall = "";
+    // true when description is received
     this.hasDescription = false;
+    // true if waiting for api response
     this.waitingForData = false;
+    // true if new data arrived
     this.changed = false;
+    // contains the data timestamps after receiving it
     this.timestamps = [];
+    // contains the data after receiving it
     this.values = [];
+    // contains the most recent timestamp
     this.mostRecentTS = "";
+    // observers that will be notified when the data changes
     this.observers = [];
+    // tells which data from the sensor to use if it has more than one value. if there's only 1 value this should be 0
     this.observerDataIndexes = [];
+    // Name of the Sensor, received after the description call
     this.name = "";
+    // IDs of the Datatypes, to get the datatypes the getDataTypes function is used.
     this.datatypeIDs = [];
+    // datatypes of the sensor. To access the datatype of a specific observer use datatypes[observerDataIndexes[observer]]
     this.datatypes = [];
+    // units for the datatypes. Same as above
     this.units = [];
+    // with the top filter, the data is received in reversed order and needs to be reversed again in the dataReceived function.
     this.reversed = false;
+    // url of the server e.g. "http://domain.name""
+    this.url = url;
 
     this.addObserver = function(observer, dataIndex){
         this.observers.push(observer);
@@ -56,7 +73,7 @@ function DataSource(){
 
     this.getDatatypes = function(){
 
-        var dataCall = "http://asperger.home/api/getDataTypes.php";
+        var dataCall = this.url + "/api/getDataTypes.php";
 
         that = this;
         if(!this.waitingForData){
@@ -102,8 +119,8 @@ function DataSource(){
     // "http://asperger.home/api/getValues.php?sensorID=45&filter=top&top=9"
     // "http://asperger.home/api/getValues.php?sensorID=45&filter=time&from=2020-11-22%2000:00:00&to=2022-11-22%2023:59:59"
     this.setupSource = function(sensorID, filter, selector){
-        this.source = "http://asperger.home/api/getValues.php?sensorID=" + sensorID + "&filter=" + filter + "&" + selector;
-        this.descriptionCall = "http://asperger.home/api/getSensor.php?sensorID=" + sensorID;
+        this.datasource = this.url + "/api/getValues.php?sensorID=" + sensorID + "&filter=" + filter + "&" + selector;
+        this.descriptionCall = this.url + "/api/getSensor.php?sensorID=" + sensorID;
         // sql query comes back in reversed order
         if (filter == "top"){
             reversed = true;
@@ -116,7 +133,7 @@ function DataSource(){
         that = this;
         if(!this.waitingForData){
             $.ajax({
-                url: this.source,
+                url: this.datasource,
                 success: function(data) { that.dataReceived(data) }
             });
             this.waitingForData = true;
