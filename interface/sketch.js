@@ -73,17 +73,9 @@ function setup() {
     dataSource3.setupSource(44, "top", "top=4");
     dataSource3.addObserver(gwidget3, 0);
 
-    counter = 0;
-
-    // for(var y = 0; y < manager.y_count; y++){
-    //     var text = "";
-    //     for(var x = 0; x < manager.x_count; x++){
-    //         text += manager.grid[x][y].isFree() + " ";
-    //     }
-    //     console.log(text);
-    // }
-
-    //manager.addWidget(widget3, 1, 3, 2, 2)
+    sourceManager = new SourceManager();
+    sourceManager.addSource(dataSource2);
+    sourceManager.addSource(dataSource3);
 }
 
 function createWidgetSize(gridSpanX, gridSpanY){
@@ -92,51 +84,9 @@ function createWidgetSize(gridSpanX, gridSpanY){
 }
 
 function draw() {
-    //widget1.draw();
+    manager.drawAll();
 
-    //manager.drawWidget(0, 0);
-
-    // toUpdate.forEach(element => {
-    //     manager.drawWidget(element[0], element[1])
-    // });
-
-    // if(updateAll){
-        manager.drawAll();
-    //     updateAll = false;
-    // }
-    // if(this.gw2Data != undefined){
-    //     gwidget2.setData(this.gw2Data);
-    //     updateAll = true;
-    //     this.gw2Data = undefined;
-    // }
-
-    if(counter < 10){
-        counter++;
-    }
-    else{
-        counter = 0;
-    }
-
-    switch(counter){
-        case 1:
-            if(dataSource2.hasDescription == false){
-                dataSource2.getDescription();
-            }
-            else{
-                dataSource2.checkForData();
-            }
-            break;
-        case 5:
-            if(dataSource3.hasDescription == false){
-                dataSource3.getDescription();
-            }
-            else{
-                dataSource3.checkForData();
-            }
-            break;
-        default:
-            break;
-    }
+    sourceManager.nextStep();
 };
 
 function windowResized() {

@@ -7,7 +7,7 @@ function DataSource(url){
     this.hasDescription = false;
     // true if waiting for api response
     this.waitingForData = false;
-    // true if new data arrived
+    // true if new data arrived, set false by the source manager
     this.changed = false;
     // contains the data timestamps after receiving it
     this.timestamps = [];
