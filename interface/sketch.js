@@ -39,26 +39,36 @@ function setup() {
     gwidget = new GraphWidget(createWidgetSize(2, 2), testData);
     gwidget2 = new GraphWidget(createWidgetSize(3, 2), undefined);
     gwidget3 = new GraphWidget(createWidgetSize(3, 2), undefined);
+    gwidget_air_temp = new GraphWidget(createWidgetSize(3, 2), undefined);
+    gwidget_air_pres = new GraphWidget(createWidgetSize(3, 2), undefined);
+    gwidget_air_humi = new GraphWidget(createWidgetSize(3, 2), undefined);
+    gwidget_air_eco2 = new GraphWidget(createWidgetSize(3, 2), undefined);
+    gwidget_air_tvoc = new GraphWidget(createWidgetSize(3, 2), undefined);
 
     manager = new WidgetManager(windowWidth - 20, windowHeight - 20, GRID_BASE_SIZE)
-    manager.addWidget(widget1, 0, 0)
-    manager.addWidget(widget1, 0, 1)
-    manager.addWidget(widget1, 1, 0)
-    manager.addWidget(widget1, 1, 1)
-    manager.addWidget(widget2, 2, 0)
-    manager.addWidget(widget3, 0, 2)
-    manager.addWidget(widget4, 2, 1)
+    // manager.addWidget(widget1, 0, 0)
+    // manager.addWidget(widget1, 0, 1)
+    // manager.addWidget(widget1, 1, 0)
+    // manager.addWidget(widget1, 1, 1)
+    // manager.addWidget(widget2, 2, 0)
+    // manager.addWidget(widget3, 0, 2)
+    // manager.addWidget(widget4, 2, 1)
 
-    manager.removeWidget(0, 0);
-    manager.removeWidget(1, 0);
-    manager.removeWidget(0, 1);
-    manager.removeWidget(1, 1);
-    manager.removeWidget(2, 1);
-    manager.removeWidget(2, 0);
+    // manager.removeWidget(0, 0);
+    // manager.removeWidget(1, 0);
+    // manager.removeWidget(0, 1);
+    // manager.removeWidget(1, 1);
+    // manager.removeWidget(2, 1);
+    // manager.removeWidget(2, 0);
 
     manager.addWidget(gwidget, 0, 0)
     manager.addWidget(gwidget2, 2, 0)
-    manager.addWidget(gwidget3, 2, 2)
+    manager.addWidget(gwidget3, 5, 0)
+    manager.addWidget(gwidget_air_temp, 0, 2)
+    manager.addWidget(gwidget_air_pres, 3, 2)
+    manager.addWidget(gwidget_air_humi, 6, 2)
+    manager.addWidget(gwidget_air_eco2, 0, 4)
+    manager.addWidget(gwidget_air_tvoc, 3, 4)
     gwidget2.setContinousSpline(true);
 
     server_url = "http://asperger.home";
@@ -73,9 +83,19 @@ function setup() {
     dataSource3.setupSource(44, "top", "top=4");
     dataSource3.addObserver(gwidget3, 0);
 
+    dataSource_air = new DataSource(server_url);
+    dataSource_air.setupSource(48, "time", "from=2022-01-01 00:00:00&to=2022-12-31 23:59:59");
+    //dataSource_air.setupSource(48, "top", "top=4");
+    dataSource_air.addObserver(gwidget_air_temp, 0);
+    dataSource_air.addObserver(gwidget_air_pres, 1);
+    dataSource_air.addObserver(gwidget_air_humi, 2);
+    dataSource_air.addObserver(gwidget_air_eco2, 3);
+    dataSource_air.addObserver(gwidget_air_tvoc, 4);
+
     sourceManager = new SourceManager();
     sourceManager.addSource(dataSource2);
     sourceManager.addSource(dataSource3);
+    sourceManager.addSource(dataSource_air);
 }
 
 function createWidgetSize(gridSpanX, gridSpanY){

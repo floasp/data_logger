@@ -123,7 +123,7 @@ function DataSource(url){
         this.descriptionCall = this.url + "/api/getSensor.php?sensorID=" + sensorID;
         // sql query comes back in reversed order
         if (filter == "top"){
-            reversed = true;
+            this.reversed = true;
         }
         //this.getDescription();
     }
@@ -170,7 +170,7 @@ function DataSource(url){
                 }
             }
 
-            if(reversed){
+            if(this.reversed){
                 times = times.reverse();
                 for(var j = 0; j < n_values; j++){
                     data[j] = data[j].reverse();
@@ -188,6 +188,7 @@ function DataSource(url){
     }
 
     this.isNew = function(data_array){
+        //console.log(data_array[data_array.length - 2]);
         obj = JSON.parse(data_array[data_array.length - 2]);
         ts = obj.timestamp;
         return ts != this.mostRecentTS;
