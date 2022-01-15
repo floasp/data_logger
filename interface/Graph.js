@@ -44,7 +44,8 @@ function Graph(posx, posy, width, height){
 
     this.drawAxes = function(xtxt, ytxt, offx, offy){
         textAlign(CENTER);
-        textSize(this.height / 20);
+        let yTextSize = Math.max(this.height / 20, 12);
+        textSize(yTextSize);
         // fill(180, 200, 235);
         // fill(120, 130, 155);
         fill(145, 155, 180);
@@ -96,13 +97,6 @@ function Graph(posx, posy, width, height){
         maxVal = Math.max(...yData);
         y_diff = maxVal - minVal;
 
-        // console.log(minDate, maxDate);
-
-        // for(var i = 0; i < xData.length; i++){
-        //     console.log(date_to_array(xData[i]));
-        //     console.log(datetime_to_int(date_to_array(xData[i])));
-        // }
-
         rel_x_values = [];
         rel_y_values = [];
         for(var i = 0; i < xData.length; i++){
@@ -110,8 +104,6 @@ function Graph(posx, posy, width, height){
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
             rel_y_values[i] = map_range(yData[i], minVal, maxVal, drawArea[3] - gHeight / 10, drawArea[2] + gHeight / 10);
         }
-        //console.log(rel_x_values);
-        //console.log(rel_y_values);
 
         stroke(0, 255, 255);
         noFill();
@@ -139,23 +131,45 @@ function Graph(posx, posy, width, height){
     };
 
     this.drawYLim = function(offx, offy){
+
         yData = this.data[1];
 
-        drawArea = this.getDrawArea();
-        gHeight = drawArea[3] - drawArea[2];
+        let drawArea = this.getDrawArea();
+        let axeXlpos = drawArea[0];
+        let axeXrpos = drawArea[1];
+        let axeYupos = drawArea[2];
+        let axeYdpos = drawArea[3];
+        let gHeight = axeYdpos - axeYupos;
 
-        minVal = Math.min(...yData);
-        maxVal = Math.max(...yData);
+        let minVal = Math.min(...yData);
+        let maxVal = Math.max(...yData);
 
-        yTextX = this.posx + this.width / 15;
+        yTextX = Math.max(this.posx + this.width / 15, axeXlpos - this.width / 100);
 
         textAlign(RIGHT);
-        textSize(this.height / 30);
+        let text_size = Math.max(this.height / 30, 10);
+        textSize(textSize);
         fill(120, 130, 155);
-        text(minVal + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
-        text(maxVal + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);
+
+        text(trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
+        text(trim_number_to_string(maxVal) + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);
 
     };
+
+    function trim_number_to_string(number){
+        if(typeof(number) == "number" && number.toString().length > 6){
+            number = number.toString().split(".");
+            if(number[0].length >= 6){
+                number = number[0];
+            }
+            else if (number.length > 1){
+                let len = number[0].length;
+                let float_len = number[1].length;
+                number = number[0] + "." + number[1].substring(0, Math.min(float_len, 6-len));
+            }
+        }
+        return number.toString();
+    }
 
     function datetime_str_to_int(datetime_str){
         return datetime_to_int(date_to_array(datetime_str));
