@@ -11,6 +11,7 @@ function Graph(posx, posy, width, height){
     this.axeNameX = "";
     this.axeNameY = "";
     this.unit = "";
+    this.line_color = [0, 255, 255];
 
     this.setContinousSpline = function(isSpline){
         this.useContinousSpline = isSpline;
@@ -22,6 +23,10 @@ function Graph(posx, posy, width, height){
         this.axeNameY = axeNameY;
         this.unit = unit;
     };
+
+    this.setLineColor = function(color_array){
+        this.line_color = color_array;
+    }
 
     this.draw = function(offx, offy){
         // fill('#111921');
@@ -107,7 +112,7 @@ function Graph(posx, posy, width, height){
             rel_y_values[i] = map_range(yData[i], minVal, maxVal, drawArea[3] - gHeight / 10, drawArea[2] + gHeight / 10);
         }
 
-        stroke(0, 255, 255);
+        stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
         noFill();
 
         // performance optimization

@@ -52,6 +52,12 @@ function setup() {
     gwidget_air_eco2 = new GraphWidget(createWidgetSize(8, 1), undefined);
     gwidget_air_tvoc = new GraphWidget(createWidgetSize(8, 1), undefined);
 
+    gwidget_air_temp.setLineColor([255, 0, 0]);
+    gwidget_air_pres.setLineColor([255, 255, 0]);
+    gwidget_air_humi.setLineColor([0, 255, 0]);
+    gwidget_air_eco2.setLineColor([0, 255, 255]);
+    gwidget_air_tvoc.setLineColor([0, 0, 255]);
+
     manager = new WidgetManager(windowWidth - 20, windowHeight - 20, GRID_BASE_SIZE)
     // manager.addWidget(widget1, 0, 0)
     // manager.addWidget(widget1, 0, 1)
