@@ -77,6 +77,7 @@ function setup() {
     manager.addWidget(gwidget_air_eco2, 0, 3)
     manager.addWidget(gwidget_air_tvoc, 0, 4)
     // gwidget2.setContinousSpline(true);
+    // gwidget_air_temp.setContinousSpline(true);
 
     server_url = "http://asperger.home";
 

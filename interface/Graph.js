@@ -82,6 +82,8 @@ function Graph(posx, posy, width, height){
     };
 
     this.drawData = function(offx, offy){
+
+        // var startTime = performance.now();
         xData = this.data[0];
         yData = this.data[1];
 
@@ -107,27 +109,34 @@ function Graph(posx, posy, width, height){
 
         stroke(0, 255, 255);
         noFill();
+
+        // performance optimization
+        // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
+        let n = Math.ceil(rel_x_values.length / gWidth);
+
         if(this.useContinousSpline){
             if(rel_x_values.length > 1){
                 beginShape();
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
-                for(var i = 1; i < xData.length - 1; i++){
+                for(var i = n; i < xData.length - n; i+=n){
                     curveVertex(rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
-                curveVertex(rel_x_values[xData.length - 1] + offx, rel_y_values[xData.length - 1] + offy);
-                curveVertex(rel_x_values[xData.length - 1] + offx, rel_y_values[xData.length - 1] + offy);
+                curveVertex(rel_x_values[xData.length - n] + offx, rel_y_values[xData.length - n] + offy);
+                curveVertex(rel_x_values[xData.length - n] + offx, rel_y_values[xData.length - n] + offy);
                 endShape();
             }
         }
         else{
             if(rel_x_values.length > 1){
-                for(var i = 1; i < xData.length; i++){
-                    line(rel_x_values[i-1] + offx, rel_y_values[i-1] + offy, rel_x_values[i] + offx, rel_y_values[i] + offy);
+                for(var i = n; i < xData.length; i+=n){
+                    line(rel_x_values[i-n] + offx, rel_y_values[i-n] + offy, rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
             }
         }
         stroke(0);
+        // var endTime = performance.now();
+        // console.log(`Drawing ${this.axeNameY} took ${endTime - startTime} milliseconds`);
     };
 
     this.drawYLim = function(offx, offy){
