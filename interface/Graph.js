@@ -102,7 +102,7 @@ function Graph(posx, posy, width, height){
 
     this.drawData = function(offx, offy){
 
-        // var startTime = performance.now();
+        var startTime = performance.now();
         xData = this.data[0];
         yData = this.data[1];
 
@@ -124,10 +124,19 @@ function Graph(posx, posy, width, height){
         actual_y_up = drawArea[3] - gHeight / 10;
         actual_y_down = drawArea[2] + gHeight / 10;
 
-        for(var i = 0; i < xData.length; i++){
-            x_value = datetime_str_to_int(xData[i]);
+        // performance optimization
+        // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
+        let n = Math.ceil(xData.length / gWidth);
+
+        for(var i = 0; i < xData.length / 8; i++){
+            x_value = datetime_str_to_int(xData[i*8]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[i], minVal, maxVal, actual_y_up, actual_y_down);
+            rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
+        }
+        if(!Number.isInteger(xData.length / 8)){ // to include the last number
+            x_value = datetime_str_to_int(xData[xData.length-1]);
+            rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
+            rel_y_values[i] = map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down);
         }
 
         let prev_style = drawingContext.strokeStyle;
@@ -163,35 +172,31 @@ function Graph(posx, posy, width, height){
 
         noFill();
 
-        // performance optimization
-        // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
-        let n = Math.ceil(rel_x_values.length / gWidth);
-
         if(this.useContinousSpline){
             if(rel_x_values.length > 1){
                 beginShape();
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
-                for(var i = n; i < xData.length - n; i+=n){
+                for(var i = 1; i < xData.length - 1; i++){
                     curveVertex(rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
-                curveVertex(rel_x_values[xData.length - n] + offx, rel_y_values[xData.length - n] + offy);
-                curveVertex(rel_x_values[xData.length - n] + offx, rel_y_values[xData.length - n] + offy);
+                curveVertex(rel_x_values[xData.length - 1] + offx, rel_y_values[xData.length - 1] + offy);
+                curveVertex(rel_x_values[xData.length - 1] + offx, rel_y_values[xData.length - 1] + offy);
                 endShape();
             }
         }
         else{
             if(rel_x_values.length > 1){
-                for(var i = n; i < xData.length; i+=n){
-                    line(rel_x_values[i-n] + offx, rel_y_values[i-n] + offy, rel_x_values[i] + offx, rel_y_values[i] + offy);
+                for(var i = 1; i < xData.length; i++){
+                    line(rel_x_values[i-1] + offx, rel_y_values[i-1] + offy, rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
             }
         }
 
         drawingContext.strokeStyle = prev_style;
         stroke(0);
-        // var endTime = performance.now();
-        // console.log(`Drawing ${this.axeNameY} took ${endTime - startTime} milliseconds`);
+        var endTime = performance.now();
+        console.log(`${endTime - startTime} milliseconds for drawing ${this.axeNameY}`);
     };
 
     this.drawYLim = function(offx, offy){

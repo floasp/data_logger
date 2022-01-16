@@ -14,9 +14,6 @@ function setup() {
 
     setGridSize(windowWidth, windowHeight);
 
-    toUpdate = [];
-    updateAll = true;
-
     // gwidget_air_temp = new GraphWidget(createWidgetSize(3, 2), undefined);
     // gwidget_air_pres = new GraphWidget(createWidgetSize(3, 2), undefined);
     // gwidget_air_humi = new GraphWidget(createWidgetSize(3, 2), undefined);
