@@ -7,11 +7,13 @@ function GraphWidget(pos_array, data){
     this.gridSpanY = pos_array[5];
     this.gridPos = undefined;
     this.updatePending = true;
-    this.name = ""
-    this.datatype = ""
-    this.unit = ""
-    this.axeNameX = ""
-    this.axeNameY = ""
+    this.name = "";
+    this.datatype = "";
+    this.unit = "";
+    this.axeNameX = "";
+    this.axeNameY = "";
+    this.prev_mouseX = 0;
+    this.prev_mouseY = 0;
 
     this.graph = new Graph(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
     this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
@@ -49,8 +51,9 @@ function GraphWidget(pos_array, data){
         this.graph.setColorMap(color_map);
     };
 
-    this.draw = function(offx, offy){
-        if(this.updatePending){
+    this.draw = function(offx, offy, mouse_x, mouse_y){
+        let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
+        if(this.updatePending || draw_mouse && (this.prev_mouseX != mouse_x || this.prev_mouseY != mouse_y)){
             fill('#111921');
             rect(this.posx + offx, this.posy + offy, this.width, this.height, 20);
             // noFill();
@@ -61,9 +64,15 @@ function GraphWidget(pos_array, data){
             fill(180, 200, 235);
             text(this.name, this.posx + this.width / 2 + offx, this.posy + this.height / 7 + offy);
 
-            this.graph.draw(offx, offy);
+            this.graph.draw(offx, offy, draw_mouse, mouse_x, mouse_y);
 
             this.updatePending = false;
+            this.prev_mouseX = mouse_x;
+            this.prev_mouseY = mouse_y;
         }
+    };
+
+    this.contains = function(mouse_x, mouse_y){
+        return (mouse_x >= this.posx && mouse_x <= this.posx + this.width && mouse_y >= this.posy && mouse_y <= this.posy + this.height);
     };
 }

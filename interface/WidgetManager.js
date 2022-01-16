@@ -68,16 +68,16 @@ function WidgetManager(canSizex, canSizey, basesize){
         }
     };
 
-    this.drawWidget = function(x, y){
+    this.drawWidget = function(x, y, mouse_x, mouse_y){
         if(this.grid[x][y].isWidget()){
-            this.grid[x][y].draw(GRID_BASE_SIZE * x, GRID_BASE_SIZE * y);
+            this.grid[x][y].draw(GRID_BASE_SIZE * x, GRID_BASE_SIZE * y, mouse_x, mouse_y);
         }
     };
 
-    this.drawAll = function(x, y){
+    this.drawAll = function(mouse_x, mouse_y){
         for(var y = 0; y < this.y_count; y++){
             for(var x = 0; x < this.x_count; x++){
-                this.drawWidget(x, y);
+                this.drawWidget(x, y, mouse_x, mouse_y);
             }
         }
     };
@@ -109,7 +109,7 @@ function WidgetContainer(){
         this.widget = undefined;
     };
 
-    this.draw = function(offx, offy){
-        this.widget.draw(offx, offy);
+    this.draw = function(offx, offy, mouse_x, mouse_y){
+        this.widget.draw(offx, offy, mouse_x, mouse_y);
     };
 }

@@ -13,7 +13,7 @@ function Widget(pos_array){
         this.updatePending = true;
     };
 
-    this.draw = function(offx, offy){
+    this.draw = function(offx, offy, mouse_x, mouse_y){
         if(this.updatePending){
             // drawingContext.shadowOffsetX = 5;
             // drawingContext.shadowOffsetY = 5;

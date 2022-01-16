@@ -20,11 +20,11 @@ function setup() {
     // gwidget_air_eco2 = new GraphWidget(createWidgetSize(3, 2), undefined);
     // gwidget_air_tvoc = new GraphWidget(createWidgetSize(3, 2), undefined);
 
-    gwidget_air_temp = new GraphWidget(createWidgetSize(8, 1), undefined);
-    gwidget_air_pres = new GraphWidget(createWidgetSize(8, 1), undefined);
-    gwidget_air_humi = new GraphWidget(createWidgetSize(8, 1), undefined);
-    gwidget_air_eco2 = new GraphWidget(createWidgetSize(8, 1), undefined);
-    gwidget_air_tvoc = new GraphWidget(createWidgetSize(8, 1), undefined);
+    gwidget_air_temp = new GraphWidget(createWidgetSize(7, 1), undefined);
+    gwidget_air_pres = new GraphWidget(createWidgetSize(7, 1), undefined);
+    gwidget_air_humi = new GraphWidget(createWidgetSize(7, 1), undefined);
+    gwidget_air_eco2 = new GraphWidget(createWidgetSize(7, 1), undefined);
+    gwidget_air_tvoc = new GraphWidget(createWidgetSize(7, 1), undefined);
 
     gwidget_air_temp.setLineColor([255, 0, 0]);
     gwidget_air_temp.setLineColorStyle(ABS_MAP_COLOR);
@@ -75,7 +75,7 @@ function createWidgetSize(gridSpanX, gridSpanY){
 }
 
 function draw() {
-    manager.drawAll();
+    manager.drawAll(mouseX, mouseY);
 
     sourceManager.nextStep();
 };

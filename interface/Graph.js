@@ -42,21 +42,21 @@ function Graph(posx, posy, width, height){
         this.color_map = color_map;
     }
 
-    this.draw = function(offx, offy){
+    this.draw = function(offx, offy, draw_mouse, mouse_x, mouse_y){
         // fill('#111921');
         // rect(posx + offx, posy + offy, width, height, 20)
         this.drawAxes(this.axeNameX, this.axeNameY, offx, offy);
         if(this.data != undefined && this.data[0] != undefined && this.data[1] != undefined){
-            this.drawData(offx, offy);
+            this.drawData(offx, offy, draw_mouse, mouse_x, mouse_y);
             this.drawYLim(offx, offy);
         }
     };
 
     this.getDrawArea = function(offx, offy){
-        axeXlpos = this.posx + this.width / 10;
-        axeXrpos = this.posx + this.width - this.width / 10;
-        axeYupos = this.posy + this.height / 5;
-        axeYdpos = this.posy + this.height - this.height / 5;
+        let axeXlpos = this.posx + this.width / 10;
+        let axeXrpos = this.posx + this.width - this.width / 10;
+        let axeYupos = this.posy + this.height / 5;
+        let axeYdpos = this.posy + this.height - this.height / 5;
 
         return [axeXlpos, axeXrpos, axeYupos, axeYdpos];
     };
@@ -100,9 +100,9 @@ function Graph(posx, posy, width, height){
         line(axes0x + offx, axes0y + offy, axesYx + offx, axesYy + offy);
     };
 
-    this.drawData = function(offx, offy){
+    this.drawData = function(offx, offy, draw_mouse, mouse_x, mouse_y){
 
-        var startTime = performance.now();
+        // var startTime = performance.now();
         xData = this.data[0];
         yData = this.data[1];
 
@@ -124,6 +124,9 @@ function Graph(posx, posy, width, height){
         actual_y_up = drawArea[3] - gHeight / 10;
         actual_y_down = drawArea[2] + gHeight / 10;
 
+        let mouse_y_data = 0;
+        let mouse_highlight_value = 0;
+
         // performance optimization
         // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
         let n = Math.ceil(xData.length / gWidth);
@@ -132,18 +135,29 @@ function Graph(posx, posy, width, height){
             x_value = datetime_str_to_int(xData[i*8]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
             rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
+            if(Math.round(rel_x_values[i] + offx) == mouse_x){
+                mouse_y_data = rel_y_values[i];
+                mouse_highlight_value = yData[i*8];
+            }
+            //console.log(Math.round(rel_x_values[i]));
         }
         if(!Number.isInteger(xData.length / 8)){ // to include the last number
             x_value = datetime_str_to_int(xData[xData.length-1]);
-            rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down);
+            rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
+            rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
+            if(Math.round(rel_x_values[rel_x_values.length - 1] + offx) == mouse_x){
+                mouse_y_data = rel_y_values[rel_x_values.length - 1];
+                mouse_highlight_value = yData[yData.length - 1];
+            }
         }
 
-        let prev_style = drawingContext.strokeStyle;
+        let prev_stroke_style = drawingContext.strokeStyle;
+        let prev_fill_style = drawingContext.fillStyle;
 
         switch(this.line_color_style){
             case STATIC_COLOR:
                 stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
+                fill(this.line_color[0], this.line_color[1], this.line_color[2]);
                 break;
             case REL_MAP_COLOR:
                 var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
@@ -158,6 +172,7 @@ function Graph(posx, posy, width, height){
                 // grad.addColorStop(0.75, 'blue');
                 // grad.addColorStop(1, 'purple');
                 drawingContext.strokeStyle = grad;
+                drawingContext.fillStyle = grad;
                 break;
             case ABS_MAP_COLOR:
                 var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
@@ -167,10 +182,11 @@ function Graph(posx, posy, width, height){
                     grad.addColorStop(1-map_range_hard(color_pairs[i][0], minVal, maxVal, 0, 1), color_pairs[i][1]);
                 };
                 drawingContext.strokeStyle = grad;
+                drawingContext.fillStyle = grad;
                 break;
         }
 
-        noFill();
+        //noFill();
 
         if(this.useContinousSpline){
             if(rel_x_values.length > 1){
@@ -193,10 +209,40 @@ function Graph(posx, posy, width, height){
             }
         }
 
-        drawingContext.strokeStyle = prev_style;
+        if(draw_mouse){
+            if(this.drawAreaContains(mouse_x, mouse_y, offx, offy)){
+                ellipse(mouse_x, mouse_y_data + offy, 10);
+
+                drawingContext.strokeStyle = prev_stroke_style;
+                drawingContext.fillStyle = prev_fill_style;
+                stroke(0);
+
+                textY = drawArea[2] + offy - gHeight / 10;
+
+                height_diff = textY - mouse_y_data - offy - gHeight / 5;
+                pad = Math.abs(height_diff / 10);
+                textX = mouse_x + height_diff;
+
+                textAlign(LEFT);
+                let text_size = Math.max(this.height / 30, 10);
+                textSize(text_size);
+                fill(120, 130, 155);
+                stroke(120, 130, 155);
+
+                highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
+                let t_width = textWidth(highlight_text);
+
+                line(mouse_x - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
+                stroke(0);
+                text(highlight_text, textX, textY);
+            }
+        }
+
+        drawingContext.strokeStyle = prev_stroke_style;
+        drawingContext.fillStyle = prev_fill_style;
         stroke(0);
-        var endTime = performance.now();
-        console.log(`${endTime - startTime} milliseconds for drawing ${this.axeNameY}`);
+        // var endTime = performance.now();
+        // console.log(`${endTime - startTime} milliseconds for drawing ${this.axeNameY}`);
     };
 
     this.drawYLim = function(offx, offy){
@@ -223,6 +269,15 @@ function Graph(posx, posy, width, height){
         text(trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
         text(trim_number_to_string(maxVal) + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);
 
+    };
+
+    this.drawAreaContains = function(mouse_x, mouse_y, offx, offy){
+        let drawArea = this.getDrawArea();
+        let axeXlpos = drawArea[0];
+        let axeXrpos = drawArea[1];
+        let axeYupos = drawArea[2];
+        let axeYdpos = drawArea[3];
+        return (mouse_x >= axeXlpos + offx && mouse_x <= axeXrpos + offx && mouse_y >= axeYupos + offy && mouse_y <= axeYdpos + offy);
     };
 
     function trim_number_to_string(number){
