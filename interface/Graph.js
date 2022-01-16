@@ -1,3 +1,7 @@
+const STATIC_COLOR = 0; // graph line has fixed avlue, default
+const REL_MAP_COLOR = 1; // graph line color changes relative to position in graph
+const ABS_MAP_COLOR = 2; // grapg line color changes relative to data values
+
 function Graph(posx, posy, width, height){
     this.posx = posx;
     this.posy = posy;
@@ -12,6 +16,8 @@ function Graph(posx, posy, width, height){
     this.axeNameY = "";
     this.unit = "";
     this.line_color = [0, 255, 255];
+    this.line_color_style = STATIC_COLOR;
+    this.color_map = undefined;
 
     this.setContinousSpline = function(isSpline){
         this.useContinousSpline = isSpline;
@@ -26,6 +32,14 @@ function Graph(posx, posy, width, height){
 
     this.setLineColor = function(color_array){
         this.line_color = color_array;
+    }
+
+    this.setLineColorStyle = function(style){
+        this.line_color_style = style;
+    }
+
+    this.setColorMap = function(color_map){
+        this.color_map = color_map;
     }
 
     this.draw = function(offx, offy){
@@ -106,13 +120,47 @@ function Graph(posx, posy, width, height){
 
         rel_x_values = [];
         rel_y_values = [];
+
+        actual_y_up = drawArea[3] - gHeight / 10;
+        actual_y_down = drawArea[2] + gHeight / 10;
+
         for(var i = 0; i < xData.length; i++){
             x_value = datetime_str_to_int(xData[i]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[i], minVal, maxVal, drawArea[3] - gHeight / 10, drawArea[2] + gHeight / 10);
+            rel_y_values[i] = map_range(yData[i], minVal, maxVal, actual_y_up, actual_y_down);
         }
 
-        stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
+        let prev_style = drawingContext.strokeStyle;
+
+        switch(this.line_color_style){
+            case STATIC_COLOR:
+                stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
+                break;
+            case REL_MAP_COLOR:
+                var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
+                var color_pairs = this.color_map.getColorPairs();
+
+                for(let i = 0; i < color_pairs.length; i++){
+                    grad.addColorStop(color_pairs[i][0], color_pairs[i][1]);
+                };
+                // grad.addColorStop(0.5, 'lime');
+                // grad.addColorStop(0.25, 'yellow');
+                // grad.addColorStop(0, 'red');
+                // grad.addColorStop(0.75, 'blue');
+                // grad.addColorStop(1, 'purple');
+                drawingContext.strokeStyle = grad;
+                break;
+            case ABS_MAP_COLOR:
+                var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
+                var color_pairs = this.color_map.getColorPairs();
+
+                for(let i = 0; i < color_pairs.length; i++){
+                    grad.addColorStop(1-map_range_hard(color_pairs[i][0], minVal, maxVal, 0, 1), color_pairs[i][1]);
+                };
+                drawingContext.strokeStyle = grad;
+                break;
+        }
+
         noFill();
 
         // performance optimization
@@ -139,6 +187,8 @@ function Graph(posx, posy, width, height){
                 }
             }
         }
+
+        drawingContext.strokeStyle = prev_style;
         stroke(0);
         // var endTime = performance.now();
         // console.log(`Drawing ${this.axeNameY} took ${endTime - startTime} milliseconds`);
@@ -162,7 +212,7 @@ function Graph(posx, posy, width, height){
 
         textAlign(RIGHT);
         let text_size = Math.max(this.height / 30, 10);
-        textSize(textSize);
+        textSize(text_size);
         fill(120, 130, 155);
 
         text(trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
@@ -243,6 +293,9 @@ function Graph(posx, posy, width, height){
 
     function map_range(value, low1, high1, low2, high2) {
         return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+    };
+    function map_range_hard(value, low1, high1, low2, high2) {
+        return Math.max(Math.min(low2 + (high2 - low2) * (value - low1) / (high1 - low1), high2), low2);
     };
 
     function date_to_array(datetime){

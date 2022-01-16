@@ -41,6 +41,14 @@ function GraphWidget(pos_array, data){
         this.graph.setLineColor(color_array);
     };
 
+    this.setLineColorStyle = function(style){
+        this.graph.setLineColorStyle(style);
+    };
+
+    this.setColorMap = function(color_map){
+        this.graph.setColorMap(color_map);
+    };
+
     this.draw = function(offx, offy){
         if(this.updatePending){
             fill('#111921');
