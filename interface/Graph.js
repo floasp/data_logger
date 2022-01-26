@@ -70,7 +70,7 @@ function Graph(posx, posy, width, height){
         fill(145, 155, 180);
 
         xTextX = this.posx + this.width / 2 + offx;
-        xTextY = this.posy + this.height - this.height / 10 + offy;
+        xTextY = this.posy + this.height - this.height / 30 + offy;
         yTextX = this.posx + this.width / 25 + offx;
         yTextY = this.posy + this.height - this.height / 2 + offy;
 
@@ -137,6 +137,7 @@ function Graph(posx, posy, width, height){
             rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
             if(Math.round(rel_x_values[i] + offx) == mouse_x){
                 mouse_y_data = rel_y_values[i];
+                mouse_highlight_pos = xData[i*8];
                 mouse_highlight_value = yData[i*8];
             }
             //console.log(Math.round(rel_x_values[i]));
@@ -147,6 +148,7 @@ function Graph(posx, posy, width, height){
             rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
             if(Math.round(rel_x_values[rel_x_values.length - 1] + offx) == mouse_x){
                 mouse_y_data = rel_y_values[rel_x_values.length - 1];
+                mouse_highlight_pos = xData[xData.length-1];
                 mouse_highlight_value = yData[yData.length - 1];
             }
         }
@@ -211,6 +213,7 @@ function Graph(posx, posy, width, height){
 
         if(draw_mouse){
             if(this.drawAreaContains(mouse_x, mouse_y, offx, offy)){
+                // draw dot
                 ellipse(mouse_x, mouse_y_data + offy, 10);
 
                 drawingContext.strokeStyle = prev_stroke_style;
@@ -223,6 +226,7 @@ function Graph(posx, posy, width, height){
                 pad = Math.abs(height_diff / 10);
                 textX = mouse_x + height_diff;
 
+                // setup text
                 textAlign(LEFT);
                 let text_size = Math.max(this.height / 30, 10);
                 textSize(text_size);
@@ -232,9 +236,20 @@ function Graph(posx, posy, width, height){
                 highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
                 let t_width = textWidth(highlight_text);
 
+                // draw line
+                stroke(0);
+                line(mouse_x, drawArea[3], mouse_x, drawArea[3] - text_size);
+                stroke(120, 130, 155);
                 line(mouse_x - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
                 stroke(0);
+                // draw value text
                 text(highlight_text, textX, textY);
+
+                // draw position text
+                textAlign(CENTER);
+                textX = mouse_x
+                textY = drawArea[3] + offy + gHeight / 10;
+                text(mouse_highlight_pos, textX, textY);
             }
         }
 
