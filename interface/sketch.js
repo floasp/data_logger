@@ -26,6 +26,12 @@ function setup() {
     gwidget_air_eco2 = new GraphWidget(createWidgetSize(7, 1), undefined);
     gwidget_air_tvoc = new GraphWidget(createWidgetSize(7, 1), undefined);
 
+    lvwidget_air_temp = new LatestValueWidget(createWidgetSize(1, 1), undefined);
+    lvwidget_air_pres = new LatestValueWidget(createWidgetSize(1, 1), undefined);
+    lvwidget_air_humi = new LatestValueWidget(createWidgetSize(1, 1), undefined);
+    lvwidget_air_eco2 = new LatestValueWidget(createWidgetSize(1, 1), undefined);
+    lvwidget_air_tvoc = new LatestValueWidget(createWidgetSize(1, 1), undefined);
+
     gwidget_air_temp.setLineColor([255, 0, 0]);
     gwidget_air_temp.setLineColorStyle(ABS_MAP_COLOR);
     temp_map = new ColorMap();
@@ -54,6 +60,12 @@ function setup() {
     manager.addWidget(gwidget_air_tvoc, 0, 4)
     // gwidget_air_temp.setContinousSpline(true);
 
+    manager.addWidget(lvwidget_air_temp, 7, 0);
+    manager.addWidget(lvwidget_air_pres, 7, 1);
+    manager.addWidget(lvwidget_air_humi, 7, 2);
+    manager.addWidget(lvwidget_air_eco2, 7, 3);
+    manager.addWidget(lvwidget_air_tvoc, 7, 4);
+
     server_url = "http://asperger.home";
 
     dataSource_air = new DataSource(server_url);
@@ -64,6 +76,12 @@ function setup() {
     dataSource_air.addObserver(gwidget_air_humi, 2);
     dataSource_air.addObserver(gwidget_air_eco2, 3);
     dataSource_air.addObserver(gwidget_air_tvoc, 4);
+
+    dataSource_air.addObserver(lvwidget_air_temp, 0);
+    dataSource_air.addObserver(lvwidget_air_pres, 1);
+    dataSource_air.addObserver(lvwidget_air_humi, 2);
+    dataSource_air.addObserver(lvwidget_air_eco2, 3);
+    dataSource_air.addObserver(lvwidget_air_tvoc, 4);
 
     sourceManager = new SourceManager();
     sourceManager.addSource(dataSource_air);
