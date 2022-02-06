@@ -1,5 +1,5 @@
 # data_logger
-Web-based software to make logging and displaying data easier. Usage and Setup is explained in the [Wiki](https://github.com/floasp/data_logger/wiki)
+Web-based software to make logging and displaying data easier. Usage and Setup is explained in the [Wiki](https://github.com/floasp/data_logger/wiki).
 
 ## API
 Call the API to setup a sensor, add specific datatypes with units, and (most importantly) log data. 
