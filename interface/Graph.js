@@ -125,7 +125,9 @@ function Graph(posx, posy, width, height){
         actual_y_down = drawArea[2] + gHeight / 10;
 
         let mouse_y_data = 0;
+        let mouse_x_data_pos = 0;
         let mouse_highlight_value = 0;
+        let min_mousedist = gWidth;
 
         // performance optimization
         // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
@@ -135,10 +137,12 @@ function Graph(posx, posy, width, height){
             x_value = datetime_str_to_int(xData[i*8]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
             rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
-            if(Math.round(rel_x_values[i] + offx) == mouse_x){
+            if(Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
                 mouse_y_data = rel_y_values[i];
+                mouse_x_data_pos = rel_x_values[i] + offx;
                 mouse_highlight_pos = xData[i*8];
                 mouse_highlight_value = yData[i*8];
+                min_mousedist = Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x)
             }
             //console.log(Math.round(rel_x_values[i]));
         }
@@ -146,8 +150,9 @@ function Graph(posx, posy, width, height){
             x_value = datetime_str_to_int(xData[xData.length-1]);
             rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
             rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
-            if(Math.round(rel_x_values[rel_x_values.length - 1] + offx) == mouse_x){
+            if(Math.abs(Math.round(rel_x_values[rel_x_values.length - 1] + offx) - mouse_x) < min_mousedist){
                 mouse_y_data = rel_y_values[rel_x_values.length - 1];
+                mouse_x_data_pos = rel_x_values[rel_x_values.length - 1] + offx;
                 mouse_highlight_pos = xData[xData.length-1];
                 mouse_highlight_value = yData[yData.length - 1];
             }
@@ -214,7 +219,7 @@ function Graph(posx, posy, width, height){
         if(draw_mouse){
             if(this.drawAreaContains(mouse_x, mouse_y, offx, offy)){
                 // draw dot
-                ellipse(mouse_x, mouse_y_data + offy, 10);
+                ellipse(mouse_x_data_pos, mouse_y_data + offy, 10);
 
                 drawingContext.strokeStyle = prev_stroke_style;
                 drawingContext.fillStyle = prev_fill_style;
@@ -224,7 +229,7 @@ function Graph(posx, posy, width, height){
 
                 height_diff = textY - mouse_y_data - offy - gHeight / 5;
                 pad = Math.abs(height_diff / 10);
-                textX = mouse_x + height_diff;
+                textX = mouse_x_data_pos + height_diff;
 
                 // setup text
                 textAlign(LEFT);
@@ -238,16 +243,16 @@ function Graph(posx, posy, width, height){
 
                 // draw line
                 stroke(0);
-                line(mouse_x, drawArea[3], mouse_x, drawArea[3] - text_size);
+                line(mouse_x_data_pos, drawArea[3], mouse_x_data_pos, drawArea[3] - text_size);
                 stroke(120, 130, 155);
-                line(mouse_x - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
+                line(mouse_x_data_pos - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
                 stroke(0);
                 // draw value text
                 text(highlight_text, textX, textY);
 
                 // draw position text
                 textAlign(CENTER);
-                textX = mouse_x
+                textX = mouse_x_data_pos
                 textY = drawArea[3] + offy + gHeight / 10;
                 text(mouse_highlight_pos, textX, textY);
             }
