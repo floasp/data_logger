@@ -69,10 +69,10 @@ function Graph(posx, posy, width, height){
         // fill(120, 130, 155);
         fill(145, 155, 180);
 
-        xTextX = this.posx + this.width / 2 + offx;
-        xTextY = this.posy + this.height - this.height / 30 + offy;
-        yTextX = this.posx + this.width / 25 + offx;
-        yTextY = this.posy + this.height - this.height / 2 + offy;
+        let xTextX = this.posx + this.width / 2 + offx;
+        let xTextY = this.posy + this.height - this.height / 30 + offy;
+        let yTextX = this.posx + this.width / 25 + offx;
+        let yTextY = this.posy + this.height - this.height / 2 + offy;
 
         textStyle(ITALIC);
         text(xtxt, xTextX, xTextY);
@@ -83,18 +83,18 @@ function Graph(posx, posy, width, height){
         rotate(PI/2);
         translate(-(yTextX), -(yTextY));
 
-        drawArea = this.getDrawArea();
-        axeXlpos = drawArea[0];
-        axeXrpos = drawArea[1];
-        axeYupos = drawArea[2];
-        axeYdpos = drawArea[3];
+        let drawArea = this.getDrawArea();
+        let axeXlpos = drawArea[0];
+        let axeXrpos = drawArea[1];
+        let axeYupos = drawArea[2];
+        let axeYdpos = drawArea[3];
 
-        axes0x = axeXlpos;
-        axes0y = axeYdpos
-        axesXx = axeXrpos;
-        axesXy = axeYdpos
-        axesYx = axeXlpos;
-        axesYy = axeYupos
+        let axes0x = axeXlpos;
+        let axes0y = axeYdpos
+        let axesXx = axeXrpos;
+        let axesXy = axeYdpos
+        let axesYx = axeXlpos;
+        let axesYy = axeYupos
 
         line(axes0x + offx, axes0y + offy, axesXx + offx, axesXy + offy);
         line(axes0x + offx, axes0y + offy, axesYx + offx, axesYy + offy);
@@ -103,30 +103,33 @@ function Graph(posx, posy, width, height){
     this.drawData = function(offx, offy, draw_mouse, mouse_x, mouse_y){
 
         // var startTime = performance.now();
-        xData = this.data[0];
-        yData = this.data[1];
+        let xData = this.data[0];
+        let yData = this.data[1];
 
-        drawArea = this.getDrawArea();
-        gWidth = drawArea[1] - drawArea[0];
-        gHeight = drawArea[3] - drawArea[2];
+        let drawArea = this.getDrawArea();
+        let gWidth = drawArea[1] - drawArea[0];
+        let gHeight = drawArea[3] - drawArea[2];
 
-        MinMaxDates = this.getMinMaxDate(xData);
-        minDate = MinMaxDates[0];
-        maxDate = MinMaxDates[1];
+        let MinMaxDates = this.getMinMaxDate(xData);
+        let minDate = MinMaxDates[0];
+        let maxDate = MinMaxDates[1];
 
-        minVal = Math.min(...yData);
-        maxVal = Math.max(...yData);
-        y_diff = maxVal - minVal;
+        //minVal = Math.min(...yData);
+        //maxVal = Math.max(...yData);
+		let minVal = this.min(yData);
+		let maxVal = this.max(yData);
+        let y_diff = maxVal - minVal;
 
-        rel_x_values = [];
-        rel_y_values = [];
+        let rel_x_values = [];
+        let rel_y_values = [];
 
-        actual_y_up = drawArea[3] - gHeight / 10;
-        actual_y_down = drawArea[2] + gHeight / 10;
+        let actual_y_up = drawArea[3] - gHeight / 10;
+        let actual_y_down = drawArea[2] + gHeight / 10;
 
         let mouse_y_data = 0;
         let mouse_x_data_pos = 0;
         let mouse_highlight_value = 0;
+        let mouse_highlight_pos = 0;
         let min_mousedist = gWidth;
 
         // performance optimization
@@ -134,7 +137,7 @@ function Graph(posx, posy, width, height){
         let n = Math.ceil(xData.length / gWidth);
 
         for(var i = 0; i < xData.length / 8; i++){
-            x_value = datetime_str_to_int(xData[i*8]);
+            let x_value = datetime_str_to_int(xData[i*8]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
             rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
             if(Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
@@ -147,7 +150,7 @@ function Graph(posx, posy, width, height){
             //console.log(Math.round(rel_x_values[i]));
         }
         if(!Number.isInteger(xData.length / 8)){ // to include the last number
-            x_value = datetime_str_to_int(xData[xData.length-1]);
+            let x_value = datetime_str_to_int(xData[xData.length-1]);
             rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
             rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
             if(Math.abs(Math.round(rel_x_values[rel_x_values.length - 1] + offx) - mouse_x) < min_mousedist){
@@ -160,15 +163,17 @@ function Graph(posx, posy, width, height){
 
         let prev_stroke_style = drawingContext.strokeStyle;
         let prev_fill_style = drawingContext.fillStyle;
-
+		let grad = undefined;
+		let color_pairs = undefined;
+			
         switch(this.line_color_style){
             case STATIC_COLOR:
                 stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
                 fill(this.line_color[0], this.line_color[1], this.line_color[2]);
                 break;
             case REL_MAP_COLOR:
-                var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
-                var color_pairs = this.color_map.getColorPairs();
+                grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
+                color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
                     grad.addColorStop(color_pairs[i][0], color_pairs[i][1]);
@@ -182,8 +187,8 @@ function Graph(posx, posy, width, height){
                 drawingContext.fillStyle = grad;
                 break;
             case ABS_MAP_COLOR:
-                var grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
-                var color_pairs = this.color_map.getColorPairs();
+                grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
+                color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
                     grad.addColorStop(1-map_range_hard(color_pairs[i][0], minVal, maxVal, 0, 1), color_pairs[i][1]);
@@ -225,11 +230,11 @@ function Graph(posx, posy, width, height){
                 drawingContext.fillStyle = prev_fill_style;
                 stroke(0);
 
-                textY = drawArea[2] + offy - gHeight / 10;
+                let textY = drawArea[2] + offy - gHeight / 10;
 
-                height_diff = textY - mouse_y_data - offy - gHeight / 5;
-                pad = Math.abs(height_diff / 10);
-                textX = mouse_x_data_pos + height_diff;
+                let height_diff = textY - mouse_y_data - offy - gHeight / 5;
+                let pad = Math.abs(height_diff / 10);
+                let textX = mouse_x_data_pos + height_diff;
 
                 // setup text
                 textAlign(LEFT);
@@ -238,7 +243,7 @@ function Graph(posx, posy, width, height){
                 fill(120, 130, 155);
                 stroke(120, 130, 155);
 
-                highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
+                let highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
                 let t_width = textWidth(highlight_text);
 
                 // draw line
@@ -267,7 +272,7 @@ function Graph(posx, posy, width, height){
 
     this.drawYLim = function(offx, offy){
 
-        yData = this.data[1];
+        let yData = this.data[1];
 
         let drawArea = this.getDrawArea();
         let axeXlpos = drawArea[0];
@@ -276,10 +281,12 @@ function Graph(posx, posy, width, height){
         let axeYdpos = drawArea[3];
         let gHeight = axeYdpos - axeYupos;
 
-        let minVal = Math.min(...yData);
-        let maxVal = Math.max(...yData);
-
-        yTextX = Math.max(this.posx + this.width / 15, axeXlpos - this.width / 100);
+        //let minVal = Math.min(...yData);
+        //let maxVal = Math.max(...yData);
+		let minVal = this.min(yData);
+		let maxVal = this.max(yData);
+		
+        let yTextX = Math.max(this.posx + this.width / 15, axeXlpos - this.width / 100);
 
         textAlign(RIGHT);
         let text_size = Math.max(this.height / 30, 10);
@@ -321,18 +328,18 @@ function Graph(posx, posy, width, height){
 
     // datetime is an array with following format: [Y, M, D, h, m, s]
     function datetime_to_int(datetime){
-        s = datetime[5];
+        let s = datetime[5];
         // console.log("  " + s);
-        m = datetime[4] * 60;
+        let m = datetime[4] * 60;
         // console.log("  " + m);
-        h = datetime[3] * 60 * 60;
+        let h = datetime[3] * 60 * 60;
         // console.log("  " + h);
-        D = datetime[2] * 60 * 60 * 24;
+        let D = datetime[2] * 60 * 60 * 24;
         // console.log("  " + D);
-        M = getMonthValue(datetime[1]) * 60 * 60 * 24;
+        let M = getMonthValue(datetime[1]) * 60 * 60 * 24;
         // console.log("  MV: " + getMonthValue(datetime[1]));
         // console.log("  " + M);
-        Y = datetime[0] * 60 * 60 * 24 * 366;
+        let Y = datetime[0] * 60 * 60 * 24 * 366;
         // console.log("  " + Y);
 
 
@@ -340,7 +347,7 @@ function Graph(posx, posy, width, height){
     };
     // returns the number of days in a year prior to this month.
     function getMonthValue(month){
-        result = 0;
+        let result = 0;
         switch(month-1){
             case 12:
                 result += 31;
@@ -351,11 +358,11 @@ function Graph(posx, posy, width, height){
             case 9:
                 result += 30;
             case 8:
-                result += 31;
+                result += 31; // fixed typo here
             case 7:
-                result += 30;
-            case 6:
                 result += 31;
+            case 6:
+                result += 30;
             case 5:
                 result += 31;
             case 4:
@@ -377,52 +384,72 @@ function Graph(posx, posy, width, height){
     function map_range_hard(value, low1, high1, low2, high2) {
         return Math.max(Math.min(low2 + (high2 - low2) * (value - low1) / (high1 - low1), high2), low2);
     };
+	
+	
+    this.max = function(numbers){
+		let m = numbers[0];
+		for(i = 0; i < numbers.length; i++){
+			if (numbers[i] > m){
+				m = numbers[i]
+			}
+		}
+		return m;
+	};
+    this.min = function(numbers){
+		let m = numbers[0];
+		for(i = 0; i < numbers.length; i++){
+			if (numbers[i] < m){
+				m = numbers[i]
+			}
+		}
+		return m;
+	};
 
     function date_to_array(datetime){
-        year_str = datetime.substring(0, 4);
-        year_int = int(year_str);
-        month_str = datetime.substring(5, 7);
-        month_int = int(month_str);
-        day_str = datetime.substring(8, 10);
-        day_int = int(day_str);
-        h_str = datetime.substring(11, 13);
-        h_int = int(h_str);
-        m_str = datetime.substring(14, 16);
-        m_int = int(m_str);
-        s_str = datetime.substring(17, 19);
-        s_int = int(s_str);
+        let year_str = datetime.substring(0, 4);
+        let year_int = int(year_str);
+        let month_str = datetime.substring(5, 7);
+        let month_int = int(month_str);
+        let day_str = datetime.substring(8, 10);
+        let day_int = int(day_str);
+        let h_str = datetime.substring(11, 13);
+        let h_int = int(h_str);
+        let m_str = datetime.substring(14, 16);
+        let m_int = int(m_str);
+        let s_str = datetime.substring(17, 19);
+        let s_int = int(s_str);
 
         return [year_int, month_int, day_int, h_int, m_int, s_int];
     };
 
     // timestamps is an array of strings formatted in the SQL DATETIME Format
     this.getMinMaxDate = function(timestamps){
-        minYear = 9999;
-        maxYear = 0;
-        minMonth = 12;
-        maxMonth = 1;
-        minDay = 366;
-        maxDay = 0;
-        minH = 24;
-        maxH = 0;
-        minM = 60;
-        maxM = 0;
-        minS = 60;
-        maxS = 0;
+        let minYear = 9999;
+        let maxYear = 0;
+        let minMonth = 12;
+        let maxMonth = 1;
+        let minDay = 366;
+        let maxDay = 0;
+        let minH = 24;
+        let maxH = 0;
+        let minM = 60;
+        let maxM = 0;
+        let minS = 60;
+        let maxS = 0;
 
         for(var i = 0; i < timestamps.length; i++){
-            year_str = timestamps[i].substring(0, 4);
-            year_int = int(year_str);
-            month_str = timestamps[i].substring(5, 7);
-            month_int = int(month_str);
-            day_str = timestamps[i].substring(8, 10);
-            day_int = int(day_str);
-            h_str = timestamps[i].substring(11, 13);
-            h_int = int(h_str);
-            m_str = timestamps[i].substring(14, 16);
-            m_int = int(m_str);
-            s_str = timestamps[i].substring(17, 19);
-            s_int = int(s_str);
+            let year_str = timestamps[i].substring(0, 4);
+            let year_int = int(year_str);
+            let month_str = timestamps[i].substring(5, 7);
+            let month_int = int(month_str);
+            let day_str = timestamps[i].substring(8, 10);
+            let day_int = int(day_str);
+            let h_str = timestamps[i].substring(11, 13);
+            let h_int = int(h_str);
+            let m_str = timestamps[i].substring(14, 16);
+            let m_int = int(m_str);
+            let s_str = timestamps[i].substring(17, 19);
+            let s_int = int(s_str);
 
             if(year_int > maxYear){
                 maxYear = year_int;

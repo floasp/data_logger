@@ -15,24 +15,24 @@ function WidgetManager(canSizex, canSizey, basesize){
     }
 
     this.addWidget = function(widget, gridx, gridy){
-        var sizex = widget.gridSpanX;
-        var sizey = widget.gridSpanY;
+        let sizex = widget.gridSpanX;
+        let sizey = widget.gridSpanY;
         if(gridx >= 0 && gridy >= 0 && gridx + sizex - 1 < this.x_count && gridy + sizey - 1 < this.y_count){
             if(this.grid[gridx][gridy].isFree()){
                 if(sizex == 1 && sizey == 1){
                     this.grid[gridx][gridy].widget = widget;
                 }
                 else{
-                    var free = true;
-                    for(var y = 0; y < this.sizey; y++){
-                        for(var x = 0; x < this.sizex; x++){
+                    let free = true;
+                    for(let y = 0; y < this.sizey; y++){
+                        for(let x = 0; x < this.sizex; x++){
                             free &= this.grid[gridx + x][gridy + y];
                         }
                     }
 
                     if(free){
-                        for(var y = 0; y < sizey; y++){
-                            for(var x = 0; x < sizex; x++){
+                        for(let y = 0; y < sizey; y++){
+                            for(let x = 0; x < sizex; x++){
                                 this.grid[gridx + x][gridy + y].setReserved();
                             }
                         }
@@ -50,19 +50,19 @@ function WidgetManager(canSizex, canSizey, basesize){
     };
 
     this.removeWidget = function(x, y){
-        ylim = y+1;
+        let ylim = y+1;
         while(this.grid[x][ylim].reserved == true && this.grid[x][ylim].widget == undefined){
             ylim++;
         }
         ylim--;
-        xlim = x+1;
+        let xlim = x+1;
         while(this.grid[xlim][y].reserved == true && this.grid[xlim][y].widget == undefined){
             xlim++;
         }
         xlim--;
 
-        for(var yy = y; yy < ylim+1; yy++){
-            for(var xx = x; xx < xlim+1; xx++){
+        for(let yy = y; yy < ylim+1; yy++){
+            for(let xx = x; xx < xlim+1; xx++){
                 this.grid[xx][yy].setFree();
             }
         }
@@ -75,8 +75,8 @@ function WidgetManager(canSizex, canSizey, basesize){
     };
 
     this.drawAll = function(mouse_x, mouse_y){
-        for(var y = 0; y < this.y_count; y++){
-            for(var x = 0; x < this.x_count; x++){
+        for(let y = 0; y < this.y_count; y++){
+            for(let x = 0; x < this.x_count; x++){
                 this.drawWidget(x, y, mouse_x, mouse_y);
             }
         }

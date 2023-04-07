@@ -20,7 +20,7 @@ function LatestValueWidget(pos_array, data){
         this.unit = unit;
         this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
         this.axeNameY = datatype;
-        var data = [timestamps, values];
+        let data = [timestamps, values];
         if(values != undefined){
             this.value = values[values.length - 1];
         }

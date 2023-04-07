@@ -25,7 +25,7 @@ function GraphWidget(pos_array, data){
         this.unit = unit;
         this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
         this.axeNameY = datatype;
-        var data = [timestamps, values];
+        let data = [timestamps, values];
         this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);

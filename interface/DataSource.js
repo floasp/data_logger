@@ -37,7 +37,7 @@ function DataSource(url){
         this.observerDataIndexes.push(dataIndex);
     }
     this.removeObserver = function(observer){
-        index = this.observers.indexOf(observer);
+        let index = this.observers.indexOf(observer);
         this.observers.splice(index, 1);
         this.observerDataIndexes.splice(index, 1);
     }
@@ -49,7 +49,7 @@ function DataSource(url){
 
     this.getDescription = function(){
 
-        that = this;
+        let that = this;
         if(!this.waitingForData){
             $.ajax({
                 url: this.descriptionCall,
@@ -63,7 +63,7 @@ function DataSource(url){
     this.receivedDescription = function(data){
 
         // console.log(data);
-        var obj = JSON.parse(data);
+        let obj = JSON.parse(data);
         this.name = obj.name;
         this.datatypeIDs = obj.datatypes.split(";");
         // console.log(datatypes);
@@ -73,9 +73,9 @@ function DataSource(url){
 
     this.getDatatypes = function(){
 
-        var dataCall = this.url + "/api/getDataTypes.php";
+        let dataCall = this.url + "/api/getDataTypes.php";
 
-        that = this;
+        let that = this;
         if(!this.waitingForData){
             $.ajax({
                 url: dataCall,
@@ -90,15 +90,15 @@ function DataSource(url){
         // console.log(data);
         // console.log(this.datatypeIDs);
 
-        var data_array = data.split("</br>");
+        let data_array = data.split("</br>");
 
         for(var i = 0; i < this.observerDataIndexes.length; i++){
-            var valueIndex = this.observerDataIndexes[i];
-            var datatype = this.datatypeIDs[valueIndex];
+            let valueIndex = this.observerDataIndexes[i];
+            let datatype = this.datatypeIDs[valueIndex];
 
             for(var j = 0; j < data_array.length-1; j++){
-                var obj = JSON.parse(data_array[j]);
-                var dtID = obj.typeID;
+                let obj = JSON.parse(data_array[j]);
+                let dtID = obj.typeID;
 
                 if(dtID == datatype){
                     this.datatypes[i] = obj.name;
@@ -130,7 +130,7 @@ function DataSource(url){
 
     this.checkForData = function(){
         // stupid but works
-        that = this;
+        let that = this;
         if(!this.waitingForData){
             $.ajax({
                 url: this.datasource,
@@ -144,21 +144,22 @@ function DataSource(url){
 
     this.dataReceived = function(data){
         //console.log(data);
-        data_array = data.split("</br>")
+        let data_array = data.split("</br>")
 
         if(this.isNew(data_array)){
-            var times = [];
+			
+            let times = [];
 
-            obj = JSON.parse(data_array[0]);
-            n_values = Object.keys(obj).length - 1;
-            var data = [];
+            let obj = JSON.parse(data_array[0]);
+            let n_values = Object.keys(obj).length - 1;
+            let data = [];
 
             for(var i = 0; i < n_values; i++){
                 data[i] = [];
             }
 
             for(var i = 0; i < data_array.length - 1; i++){
-                var obj = JSON.parse(data_array[i]);
+                obj = JSON.parse(data_array[i]);
                 // console.log(Object.keys(obj).length);
                 // console.log(obj);
                 // console.log(obj["value0"]);
@@ -176,7 +177,7 @@ function DataSource(url){
                     data[j] = data[j].reverse();
                 }
             }
-
+			
             this.timestamps = times;
             this.values = data;
 
@@ -189,8 +190,8 @@ function DataSource(url){
 
     this.isNew = function(data_array){
         //console.log(data_array[data_array.length - 2]);
-        obj = JSON.parse(data_array[data_array.length - 2]);
-        ts = obj.timestamp;
+        let obj = JSON.parse(data_array[data_array.length - 2]);
+        let ts = obj.timestamp;
         return ts != this.mostRecentTS;
     }
 };
