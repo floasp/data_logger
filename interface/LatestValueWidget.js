@@ -27,7 +27,7 @@ function LatestValueWidget(pos_array, data){
         this.timestamp = timestamps[timestamps.length - 1];
         // this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
-        console.log([timestamps, values]);
+        //console.log([timestamps, values]);
     };
 
     this.draw = function(offx, offy, mouse_x, mouse_y){

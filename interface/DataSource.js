@@ -147,7 +147,7 @@ function DataSource(url){
         let data_array = data.split("</br>")
 
         if(this.isNew(data_array)){
-			
+
             let times = [];
 
             let obj = JSON.parse(data_array[0]);
@@ -177,7 +177,7 @@ function DataSource(url){
                     data[j] = data[j].reverse();
                 }
             }
-			
+
             this.timestamps = times;
             this.values = data;
 

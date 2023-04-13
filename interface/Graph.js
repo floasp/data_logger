@@ -136,20 +136,20 @@ function Graph(posx, posy, width, height){
         // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
         let n = Math.ceil(xData.length / gWidth);
 
-        for(var i = 0; i < xData.length / 8; i++){
-            let x_value = datetime_str_to_int(xData[i*8]);
+        for(var i = 0; i < xData.length / n; i++){
+            let x_value = datetime_str_to_int(xData[i*n]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[i*8], minVal, maxVal, actual_y_up, actual_y_down);
+            rel_y_values[i] = map_range(yData[i*n], minVal, maxVal, actual_y_up, actual_y_down);
             if(Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
                 mouse_y_data = rel_y_values[i];
                 mouse_x_data_pos = rel_x_values[i] + offx;
-                mouse_highlight_pos = xData[i*8];
-                mouse_highlight_value = yData[i*8];
+                mouse_highlight_pos = xData[i*n];
+                mouse_highlight_value = yData[i*n];
                 min_mousedist = Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x)
             }
             //console.log(Math.round(rel_x_values[i]));
         }
-        if(!Number.isInteger(xData.length / 8)){ // to include the last number
+        if(!Number.isInteger(xData.length / n)){ // to include the last number
             let x_value = datetime_str_to_int(xData[xData.length-1]);
             rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
             rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
@@ -165,7 +165,7 @@ function Graph(posx, posy, width, height){
         let prev_fill_style = drawingContext.fillStyle;
 		let grad = undefined;
 		let color_pairs = undefined;
-			
+
         switch(this.line_color_style){
             case STATIC_COLOR:
                 stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
@@ -248,7 +248,7 @@ function Graph(posx, posy, width, height){
 
                 // draw line
                 stroke(0);
-                line(mouse_x_data_pos, drawArea[3], mouse_x_data_pos, drawArea[3] - text_size);
+                line(mouse_x_data_pos + offx, drawArea[3] + offy, mouse_x_data_pos + offx, drawArea[3] - text_size + offy);
                 stroke(120, 130, 155);
                 line(mouse_x_data_pos - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
                 stroke(0);
@@ -285,7 +285,7 @@ function Graph(posx, posy, width, height){
         //let maxVal = Math.max(...yData);
 		let minVal = this.min(yData);
 		let maxVal = this.max(yData);
-		
+
         let yTextX = Math.max(this.posx + this.width / 15, axeXlpos - this.width / 100);
 
         textAlign(RIGHT);
@@ -384,8 +384,8 @@ function Graph(posx, posy, width, height){
     function map_range_hard(value, low1, high1, low2, high2) {
         return Math.max(Math.min(low2 + (high2 - low2) * (value - low1) / (high1 - low1), high2), low2);
     };
-	
-	
+
+
     this.max = function(numbers){
 		let m = numbers[0];
 		for(i = 0; i < numbers.length; i++){

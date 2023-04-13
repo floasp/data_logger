@@ -66,11 +66,11 @@ function setup() {
     manager.addWidget(lvwidget_air_eco2, 7, 3);
     manager.addWidget(lvwidget_air_tvoc, 7, 4);
 
-    server_url = "http://asperger.home";
+    server_url = "http://10.0.0.222";
 
     dataSource_air = new DataSource(server_url);
-    //dataSource_air.setupSource(48, "time", "from=2022-01-01 00:00:00&to=2022-12-31 23:59:59");
-    dataSource_air.setupSource(48, "top", "top=50000");
+    dataSource_air.setupSource(48, "time", "from=2023-01-01 00:00:00&to=2024-12-31 23:59:59");
+    //dataSource_air.setupSource(48, "top", "top=50000");
     dataSource_air.addObserver(gwidget_air_temp, 0);
     dataSource_air.addObserver(gwidget_air_pres, 1);
     dataSource_air.addObserver(gwidget_air_humi, 2);
