@@ -155,7 +155,7 @@ function BarChart(posx, posy, width, height){
                 fill(this.line_color[0], this.line_color[1], this.line_color[2]);
                 break;
             case REL_MAP_COLOR:
-                grad = drawingContext.createLinearGradient(drawArea[0] + offx, 0, drawArea[1] + offx, 0);
+                grad = drawingContext.createLinearGradient(drawArea[1] + offx, 0, drawArea[0] + offx, 0);
                 color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
@@ -165,7 +165,7 @@ function BarChart(posx, posy, width, height){
                 drawingContext.fillStyle = grad;
                 break;
             case ABS_MAP_COLOR:
-                grad = drawingContext.createLinearGradient(drawArea[0] + offx, 0, drawArea[1] + offx, 0);
+                grad = drawingContext.createLinearGradient(drawArea[1] + offx, 0, drawArea[0] + offx, 0);
                 color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
