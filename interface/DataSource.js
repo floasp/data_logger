@@ -116,8 +116,6 @@ function DataSource(url){
         this.hasDescription = true;
     }
 
-    // "http://asperger.home/api/getValues.php?sensorID=45&filter=top&top=9"
-    // "http://asperger.home/api/getValues.php?sensorID=45&filter=time&from=2020-11-22%2000:00:00&to=2022-11-22%2023:59:59"
     this.setupSource = function(sensorID, filter, selector){
         this.datasource = this.url + "/api/getValues.php?sensorID=" + sensorID + "&filter=" + filter + "&" + selector;
         this.descriptionCall = this.url + "/api/getSensor.php?sensorID=" + sensorID;
@@ -138,8 +136,6 @@ function DataSource(url){
             });
             this.waitingForData = true;
         }
-        //console.log("test");
-        // console.log(source);
     }
 
     this.dataReceived = function(data){

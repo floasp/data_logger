@@ -1,4 +1,4 @@
-function GraphWidget(pos_array, data){
+function NGraphWidget(pos_array, data){
     this.posx = pos_array[0];
     this.posy = pos_array[1];
     this.width = pos_array[2];
@@ -15,17 +15,22 @@ function GraphWidget(pos_array, data){
     this.prev_mouseX = 0;
     this.prev_mouseY = 0;
 
-    this.graph = new Graph(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
+    this.graph = new NGraphUnitTime(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
     this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
 
     // observer pattern, gets called by the observable
-    this.notify = function(timestamps, values, name, datatype, unit, dataset_id){
+    this.notify = function(timestamps, values_array, name, datatype, unit){
         this.name = name;
         this.datatype = datatype;
         this.unit = unit;
         this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
         this.axeNameY = datatype;
-        let data = [timestamps, values];
+		
+        let data = [timestamps];
+		for(let id = 0; id < values_array.length; id++){
+			data.push(values_array[id]);
+		}
+		
         this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);

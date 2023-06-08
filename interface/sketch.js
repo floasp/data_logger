@@ -4,7 +4,7 @@ var PADDING = GRID_BASE_SIZE / 20;
 
 // makes GRID_BASE_SIZE so that the smaller side contains 8 Squares.
 function setGridSize(windowWidth, windowHeight){
-    GRID_BASE_SIZE = Math.floor(Math.min(windowWidth, windowHeight) / 6);
+    GRID_BASE_SIZE = Math.floor(Math.min(windowWidth, windowHeight) / 7);
     PADDING = GRID_BASE_SIZE / 20;
 }
 
@@ -25,6 +25,8 @@ function setup() {
     gwidget_air_humi = new GraphWidget(createWidgetSize(7, 1), undefined);
     gwidget_air_eco2 = new GraphWidget(createWidgetSize(7, 1), undefined);
     gwidget_air_tvoc = new GraphWidget(createWidgetSize(7, 1), undefined);
+	
+    ngwidget_air_temp_minmax = new NGraphWidget(createWidgetSize(7, 1), undefined);
 
     lvwidget_air_temp = new LatestValueWidget(createWidgetSize(1, 1), undefined);
     lvwidget_air_pres = new LatestValueWidget(createWidgetSize(1, 1), undefined);
@@ -52,6 +54,10 @@ function setup() {
     temp_map.addColor(25, 'red');
     gwidget_air_temp.setColorMap(temp_map);
     hwidget_air_temp.setColorMap(temp_map);
+	
+	// min max widget
+	ngwidget_air_temp_minmax.setLineColorStyle([ABS_MAP_COLOR, ABS_MAP_COLOR]);
+    ngwidget_air_temp_minmax.setColorMap([temp_map, temp_map]);
 
     gwidget_air_pres.setLineColor([255, 255, 0]);
     gwidget_air_humi.setLineColor([0, 255, 0]);
@@ -89,12 +95,14 @@ function setup() {
     manager.addWidget(hwidget_air_humi, 8, 2);
     manager.addWidget(hwidget_air_eco2, 8, 3);
     manager.addWidget(hwidget_air_tvoc, 8, 4);
+	
+	manager.addWidget(ngwidget_air_temp_minmax, 0, 5);
 
-    server_url = "http://server.name/";
+    server_url = "http://asperger.home/";
 
     dataSource_air = new DataSource(server_url);
-    dataSource_air.setupSource(48, "time", "from=2023-05-01 00:00:00&to=2024-12-31 23:59:59");
-    //dataSource_air.setupSource(48, "top", "top=50000");
+    //dataSource_air.setupSource(48, "time", "from=2023-05-01 00:00:00&to=2024-12-31 23:59:59");
+    dataSource_air.setupSource(48, "top", "top=50000");
     dataSource_air.addObserver(gwidget_air_temp, 0);
     dataSource_air.addObserver(gwidget_air_pres, 1);
     dataSource_air.addObserver(gwidget_air_humi, 2);
@@ -112,6 +120,11 @@ function setup() {
     dataSource_air.addObserver(hwidget_air_humi, 2);
     dataSource_air.addObserver(hwidget_air_eco2, 3);
     dataSource_air.addObserver(hwidget_air_tvoc, 4);
+	
+	minmax_filter = new DataFilter_DayMinMax();
+	dataSource_air.addObserver(minmax_filter, 0);
+	minmax_filter.addObserver(ngwidget_air_temp_minmax);
+	
 
     sourceManager = new SourceManager();
     sourceManager.addSource(dataSource_air);
