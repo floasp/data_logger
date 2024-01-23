@@ -13,7 +13,7 @@ class Graph{
         this.axeNameY = "";
         this.unit = "";
         this.line_color = [0, 255, 255];
-        this.line_color_style = STATIC_COLOR;
+        this.line_color_style = DLI_STATIC_COLOR;
         this.color_map = undefined;
     }
 
@@ -165,11 +165,11 @@ class Graph{
 		let color_pairs = undefined;
 
         switch(this.line_color_style){
-            case STATIC_COLOR:
+            case DLI_STATIC_COLOR:
                 stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
                 fill(this.line_color[0], this.line_color[1], this.line_color[2]);
                 break;
-            case REL_MAP_COLOR:
+            case DLI_REL_MAP_COLOR:
                 grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
                 color_pairs = this.color_map.getColorPairs();
 
@@ -184,7 +184,7 @@ class Graph{
                 drawingContext.strokeStyle = grad;
                 drawingContext.fillStyle = grad;
                 break;
-            case ABS_MAP_COLOR:
+            case DLI_ABS_MAP_COLOR:
                 grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
                 color_pairs = this.color_map.getColorPairs();
 

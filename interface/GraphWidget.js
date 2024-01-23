@@ -21,7 +21,7 @@ class GraphWidget{
     }
 
     // observer pattern, gets called by the observable
-    notify = function(timestamps, values, name, datatype, unit, dataset_id){
+    notify(timestamps, values, name, datatype, unit, dataset_id){
         this.name = name;
         this.datatype = datatype;
         this.unit = unit;

@@ -16,7 +16,7 @@ class NGraphUnitTime{
         this.axeNameY = "";
         this.unit = "";
         this.line_color = [0, 255, 255];
-        this.line_color_style = STATIC_COLOR;
+        this.line_color_style = DLI_STATIC_COLOR;
         this.color_map = undefined;
     }
 
@@ -219,11 +219,11 @@ class NGraphUnitTime{
 		for(let id = 1; id < this.data.length; id++){
 
 			switch(this.line_color_style[id]){
-				case STATIC_COLOR:
+				case DLI_STATIC_COLOR:
 					stroke(this.line_color[id][0], this.line_color[id][1], this.line_color[id][2]);
 					fill(this.line_color[id][0], this.line_color[id][1], this.line_color[id][2]);
 					break;
-				case REL_MAP_COLOR:
+				case DLI_REL_MAP_COLOR:
 					grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
 					color_pairs = this.color_map[id].getColorPairs();
 
@@ -238,7 +238,7 @@ class NGraphUnitTime{
 					drawingContext.strokeStyle = grad;
 					drawingContext.fillStyle = grad;
 					break;
-				case ABS_MAP_COLOR:
+				case DLI_ABS_MAP_COLOR:
 					grad = drawingContext.createLinearGradient(0, actual_y_down + offy, 0, actual_y_up + offy);
 					color_pairs = this.color_map[id].getColorPairs();
 

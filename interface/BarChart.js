@@ -14,7 +14,7 @@ class BarChart{
         this.axeNameY = "";
         this.unit = "";
         this.line_color = [0, 255, 255];
-        this.line_color_style = STATIC_COLOR;
+        this.line_color_style = DLI_STATIC_COLOR;
         this.color_map = undefined;
         this.orientation = "horizontal";
     }
@@ -153,11 +153,11 @@ class BarChart{
 		let color_pairs = undefined;
 
         switch(this.line_color_style){
-            case STATIC_COLOR:
+            case DLI_STATIC_COLOR:
                 stroke(this.line_color[0], this.line_color[1], this.line_color[2]);
                 fill(this.line_color[0], this.line_color[1], this.line_color[2]);
                 break;
-            case REL_MAP_COLOR:
+            case DLI_REL_MAP_COLOR:
                 grad = drawingContext.createLinearGradient(drawArea[1] + offx, 0, drawArea[0] + offx, 0);
                 color_pairs = this.color_map.getColorPairs();
 
@@ -167,7 +167,7 @@ class BarChart{
                 drawingContext.strokeStyle = grad;
                 drawingContext.fillStyle = grad;
                 break;
-            case ABS_MAP_COLOR:
+            case DLI_ABS_MAP_COLOR:
                 grad = drawingContext.createLinearGradient(drawArea[1] + offx, 0, drawArea[0] + offx, 0);
                 color_pairs = this.color_map.getColorPairs();
 

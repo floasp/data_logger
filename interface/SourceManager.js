@@ -79,6 +79,10 @@ class SourceManager{
         }
     }
 
+    reloadDescription(){
+        this.hasDescriptions = false;
+    }
+
     nextStep(){
         if(this.frame_counter >= this.framesPerCheck-1 || this.finishedEveryOnce == false){
             this.frame_counter = 0;
