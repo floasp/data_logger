@@ -1,44 +1,46 @@
-function Graph(posx, posy, width, height){
-    this.posx = posx;
-    this.posy = posy;
-    this.width = width;
-    this.height = height;
-    this.gridPos = undefined;
-    this.data = undefined;
-    this.datamin = undefined;
-    this.datamax = undefined;
-    this.useContinousSpline = false;
-    this.axeNameX = "";
-    this.axeNameY = "";
-    this.unit = "";
-    this.line_color = [0, 255, 255];
-    this.line_color_style = STATIC_COLOR;
-    this.color_map = undefined;
+class Graph{
+    constructor(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
+        this.gridPos = undefined;
+        this.data = undefined;
+        this.datamin = undefined;
+        this.datamax = undefined;
+        this.useContinousSpline = false;
+        this.axeNameX = "";
+        this.axeNameY = "";
+        this.unit = "";
+        this.line_color = [0, 255, 255];
+        this.line_color_style = STATIC_COLOR;
+        this.color_map = undefined;
+    }
 
-    this.setContinousSpline = function(isSpline){
+    setContinousSpline(isSpline){
         this.useContinousSpline = isSpline;
-    };
+    }
 
-    this.setData = function(data, axeNameX, axeNameY, unit){
+    setData(data, axeNameX, axeNameY, unit){
         this.data = data;
         this.axeNameX = axeNameX;
         this.axeNameY = axeNameY;
         this.unit = unit;
-    };
+    }
 
-    this.setLineColor = function(color_array){
+    setLineColor(color_array){
         this.line_color = color_array;
     }
 
-    this.setLineColorStyle = function(style){
+    setLineColorStyle(style){
         this.line_color_style = style;
     }
 
-    this.setColorMap = function(color_map){
+    setColorMap(color_map){
         this.color_map = color_map;
     }
 
-    this.draw = function(offx, offy, draw_mouse, mouse_x, mouse_y){
+    draw(offx, offy, draw_mouse, mouse_x, mouse_y){
         // fill('#111921');
         // rect(posx + offx, posy + offy, width, height, 20)
         this.drawAxes(this.axeNameX, this.axeNameY, offx, offy);
@@ -46,18 +48,18 @@ function Graph(posx, posy, width, height){
             this.drawData(offx, offy, draw_mouse, mouse_x, mouse_y);
             this.drawYLim(offx, offy);
         }
-    };
+    }
 
-    this.getDrawArea = function(offx, offy){
+    getDrawArea(offx, offy){
         let axeXlpos = this.posx + this.width / 10;
         let axeXrpos = this.posx + this.width - this.width / 10;
         let axeYupos = this.posy + this.height / 5;
         let axeYdpos = this.posy + this.height - this.height / 5;
 
         return [axeXlpos, axeXrpos, axeYupos, axeYdpos];
-    };
+    }
 
-    this.drawAxes = function(xtxt, ytxt, offx, offy){
+    drawAxes(xtxt, ytxt, offx, offy){
         textAlign(CENTER);
         let yTextSize = Math.max(this.height / 20, 12);
         textSize(yTextSize);
@@ -94,9 +96,9 @@ function Graph(posx, posy, width, height){
 
         line(axes0x + offx, axes0y + offy, axesXx + offx, axesXy + offy);
         line(axes0x + offx, axes0y + offy, axesYx + offx, axesYy + offy);
-    };
+    }
 
-    this.drawData = function(offx, offy, draw_mouse, mouse_x, mouse_y){
+    drawData(offx, offy, draw_mouse, mouse_x, mouse_y){
 
         // var startTime = performance.now();
         let xData = this.data[0];
@@ -132,10 +134,10 @@ function Graph(posx, posy, width, height){
         // only every n_th number gets drawn. n is defined as the values per pixel. Such that for every pixel no more than ~1 value is drawn.
         let n = Math.ceil(xData.length / gWidth);
 
-        for(var i = 0; i < xData.length / n; i++){
-            let x_value = datetime_str_to_int(xData[i*n]);
-            rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[i*n], minVal, maxVal, actual_y_up, actual_y_down);
+        for(let i = 0; i < xData.length / n; i++){
+            let x_value = this.datetime_str_to_int(xData[i*n]);
+            rel_x_values[i] = this.map_range(x_value, this.datetime_to_int(minDate), this.datetime_to_int(maxDate), drawArea[0], drawArea[1]);
+            rel_y_values[i] = this.map_range(yData[i*n], minVal, maxVal, actual_y_up, actual_y_down);
             if(Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
                 mouse_y_data = rel_y_values[i];
                 mouse_x_data_pos = rel_x_values[i] + offx;
@@ -146,9 +148,9 @@ function Graph(posx, posy, width, height){
             //console.log(Math.round(rel_x_values[i]));
         }
         if(!Number.isInteger(xData.length / n)){ // to include the last number
-            let x_value = datetime_str_to_int(xData[xData.length-1]);
-            rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
-            rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
+            let x_value = this.datetime_str_to_int(xData[xData.length-1]);
+            rel_x_values.push(this.map_range(x_value, this.datetime_to_int(minDate), this.datetime_to_int(maxDate), drawArea[0], drawArea[1]));
+            rel_y_values.push(this.map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
             if(Math.abs(Math.round(rel_x_values[rel_x_values.length - 1] + offx) - mouse_x) < min_mousedist){
                 mouse_y_data = rel_y_values[rel_x_values.length - 1];
                 mouse_x_data_pos = rel_x_values[rel_x_values.length - 1] + offx;
@@ -187,7 +189,7 @@ function Graph(posx, posy, width, height){
                 color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
-                    grad.addColorStop(1-map_range_hard(color_pairs[i][0], minVal, maxVal, 0, 1), color_pairs[i][1]);
+                    grad.addColorStop(1-this.map_range_hard(color_pairs[i][0], minVal, maxVal, 0, 1), color_pairs[i][1]);
                 };
                 drawingContext.strokeStyle = grad;
                 drawingContext.fillStyle = grad;
@@ -201,7 +203,7 @@ function Graph(posx, posy, width, height){
                 beginShape();
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
                 curveVertex(rel_x_values[0] + offx, rel_y_values[0] + offy);
-                for(var i = 1; i < xData.length - 1; i++){
+                for(let i = 1; i < xData.length - 1; i++){
                     curveVertex(rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
                 curveVertex(rel_x_values[xData.length - 1] + offx, rel_y_values[xData.length - 1] + offy);
@@ -211,7 +213,7 @@ function Graph(posx, posy, width, height){
         }
         else{
             if(rel_x_values.length > 1){
-                for(var i = 1; i < xData.length; i++){
+                for(let i = 1; i < xData.length; i++){
                     line(rel_x_values[i-1] + offx, rel_y_values[i-1] + offy, rel_x_values[i] + offx, rel_y_values[i] + offy);
                 }
             }
@@ -239,7 +241,7 @@ function Graph(posx, posy, width, height){
                 fill(120, 130, 155);
                 stroke(120, 130, 155);
 
-                let highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
+                let highlight_text = this.trim_number_to_string(mouse_highlight_value) + " " + this.unit;
                 let t_width = textWidth(highlight_text);
 
                 // draw line
@@ -264,9 +266,9 @@ function Graph(posx, posy, width, height){
         stroke(0);
         // var endTime = performance.now();
         // console.log(`${endTime - startTime} milliseconds for drawing ${this.axeNameY}`);
-    };
+    }
 
-    this.drawYLim = function(offx, offy){
+    drawYLim(offx, offy){
 
         let yData = this.data[1];
 
@@ -289,21 +291,21 @@ function Graph(posx, posy, width, height){
         textSize(text_size);
         fill(120, 130, 155);
 
-        text(trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
-        text(trim_number_to_string(maxVal) + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);
+        text(this.trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
+        text(this.trim_number_to_string(maxVal) + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);
 
-    };
+    }
 
-    this.drawAreaContains = function(mouse_x, mouse_y, offx, offy){
+    drawAreaContains(mouse_x, mouse_y, offx, offy){
         let drawArea = this.getDrawArea();
         let axeXlpos = drawArea[0];
         let axeXrpos = drawArea[1];
         let axeYupos = drawArea[2];
         let axeYdpos = drawArea[3];
         return (mouse_x >= axeXlpos + offx && mouse_x <= axeXrpos + offx && mouse_y >= axeYupos + offy && mouse_y <= axeYdpos + offy);
-    };
+    }
 
-    function trim_number_to_string(number){
+    trim_number_to_string(number){
         if(typeof(number) == "number" && number.toString().length > 6){
             number = number.toString().split(".");
             if(number[0].length >= 6){
@@ -318,12 +320,12 @@ function Graph(posx, posy, width, height){
         return number.toString();
     }
 
-    function datetime_str_to_int(datetime_str){
-        return datetime_to_int(date_to_array(datetime_str));
-    };
+    datetime_str_to_int(datetime_str){
+        return this.datetime_to_int(this.date_to_array(datetime_str));
+    }
 
     // datetime is an array with following format: [Y, M, D, h, m, s]
-    function datetime_to_int(datetime){
+    datetime_to_int(datetime){
         let s = datetime[5];
         // console.log("  " + s);
         let m = datetime[4] * 60;
@@ -332,7 +334,7 @@ function Graph(posx, posy, width, height){
         // console.log("  " + h);
         let D = datetime[2] * 60 * 60 * 24;
         // console.log("  " + D);
-        let M = getMonthValue(datetime[1]) * 60 * 60 * 24;
+        let M = this.getMonthValue(datetime[1]) * 60 * 60 * 24;
         // console.log("  MV: " + getMonthValue(datetime[1]));
         // console.log("  " + M);
         let Y = datetime[0] * 60 * 60 * 24 * 366;
@@ -340,9 +342,9 @@ function Graph(posx, posy, width, height){
 
 
         return s+m+h+D+M+Y;
-    };
+    }
     // returns the number of days in a year prior to this month.
-    function getMonthValue(month){
+    getMonthValue(month){
         let result = 0;
         switch(month-1){
             case 12:
@@ -372,36 +374,36 @@ function Graph(posx, posy, width, height){
             default:
         }
         return result;
-    };
+    }
 
-    function map_range(value, low1, high1, low2, high2) {
+    map_range(value, low1, high1, low2, high2) {
         return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-    };
-    function map_range_hard(value, low1, high1, low2, high2) {
+    }
+    map_range_hard(value, low1, high1, low2, high2) {
         return Math.max(Math.min(low2 + (high2 - low2) * (value - low1) / (high1 - low1), high2), low2);
-    };
+    }
 
 
-    this.max = function(numbers){
+    max(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] > m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};
-    this.min = function(numbers){
+	}
+    min(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] < m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};
+	}
 
-    function date_to_array(datetime){
+    date_to_array(datetime){
         let year_str = datetime.substring(0, 4);
         let year_int = int(year_str);
         let month_str = datetime.substring(5, 7);
@@ -416,10 +418,10 @@ function Graph(posx, posy, width, height){
         let s_int = int(s_str);
 
         return [year_int, month_int, day_int, h_int, m_int, s_int];
-    };
+    }
 
     // timestamps is an array of strings formatted in the SQL DATETIME Format
-    this.getMinMaxDate = function(timestamps){
+    getMinMaxDate(timestamps){
         let minYear = 9999;
         let maxYear = 0;
         let minMonth = 12;
@@ -433,7 +435,7 @@ function Graph(posx, posy, width, height){
         let minS = 60;
         let maxS = 0;
 
-        for(var i = 0; i < timestamps.length; i++){
+        for(let i = 0; i < timestamps.length; i++){
             let year_str = timestamps[i].substring(0, 4);
             let year_int = int(year_str);
             let month_str = timestamps[i].substring(5, 7);
@@ -536,5 +538,5 @@ function Graph(posx, posy, width, height){
         }
 
         return [[minYear, minMonth, minDay, minH, minM, minS], [maxYear, maxMonth, maxDay, maxH, maxM, maxS]];
-    };
-};
+    }
+}

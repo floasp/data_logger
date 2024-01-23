@@ -1,29 +1,31 @@
-function SourceManager(){
-    this.sources = [];
-    this.hasDescriptions = false;
-    this.waitingToFinish = false;
-    this.currentSource = 0;
-    this.framesPerCheck = 10; // check every 10 frames or 1s
-    this.frame_counter = 0;
-    this.finishedEveryOnce = false;
+class SourceManager{
+    constructor(){
+        this.sources = [];
+        this.hasDescriptions = false;
+        this.waitingToFinish = false;
+        this.currentSource = 0;
+        this.framesPerCheck = 10; // check every 10 frames or 1s
+        this.frame_counter = 0;
+        this.finishedEveryOnce = false;
+    }
 
-    this.addSource = function(data_source){
+    addSource(data_source){
         this.sources.push(data_source);
         this.hasDescriptions = false;
-    };
-    this.removeSource = function(data_source){
+    }
+    removeSource(data_source){
         index = this.sources.indexOf(data_source);
         this.sources.splice(index, 1);
     }
 
     // called to initiate an update of the descriptions
-    this.updateDescriptions = function(){
+    updateDescriptions(){
         this.hasDescriptions = false;
         this.currentSource = 0;
     }
 
     // only called from within the nextStep function
-    this.getDescriptions = function(){
+    getDescriptions(){
         // if it's not in the range, reset it
         if(this.currentSource >= 0 && this.currentSource < this.sources.length){
             // state 0: uninitialized
@@ -49,7 +51,7 @@ function SourceManager(){
         }
     }
 
-    this.getAllData = function(){
+    getAllData(){
         // if it's not in the range, reset it
         if(this.currentSource >= 0 && this.currentSource < this.sources.length){
             // wasn't updated
@@ -77,7 +79,7 @@ function SourceManager(){
         }
     }
 
-    this.nextStep = function(){
+    nextStep(){
         if(this.frame_counter >= this.framesPerCheck-1 || this.finishedEveryOnce == false){
             this.frame_counter = 0;
 
@@ -95,4 +97,4 @@ function SourceManager(){
             this.frame_counter += 1;
         }
     }
-};
+}

@@ -1,46 +1,49 @@
-function BarChart(posx, posy, width, height){
-    this.posx = posx;
-    this.posy = posy;
-    this.width = width;
-    this.height = height;
-    this.gridPos = undefined;
-    this.data = undefined;
-    this.datamin = undefined;
-    this.datamax = undefined;
-    this.useContinousSpline = false;
-    this.axeNameX = "";
-    this.axeNameY = "";
-    this.unit = "";
-    this.line_color = [0, 255, 255];
-    this.line_color_style = STATIC_COLOR;
-    this.color_map = undefined;
-	this.orientation = "horizontal";
+class BarChart{
+
+    constructor(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
+        this.gridPos = undefined;
+        this.data = undefined;
+        this.datamin = undefined;
+        this.datamax = undefined;
+        this.useContinousSpline = false;
+        this.axeNameX = "";
+        this.axeNameY = "";
+        this.unit = "";
+        this.line_color = [0, 255, 255];
+        this.line_color_style = STATIC_COLOR;
+        this.color_map = undefined;
+        this.orientation = "horizontal";
+    }
 	
-    this.setOrientation = function(orientation){
+    setOrientation(orientation){
         this.orientation = orientation;
-    };
+    }
 
 	// placement of axeNames depends on orientation and is not automatically updated when orientation is changed
-    this.setData = function(data, axeNameX, axeNameY, unit){
+    setData(data, axeNameX, axeNameY, unit){
         this.data = data;
         this.axeNameX = axeNameX;
         this.axeNameY = axeNameY;
         this.unit = unit;
-    };
+    }
 
-    this.setLineColor = function(color_array){
+    setLineColor(color_array){
         this.line_color = color_array;
     }
 
-    this.setLineColorStyle = function(style){
+    setLineColorStyle(style){
         this.line_color_style = style;
     }
 
-    this.setColorMap = function(color_map){
+    setColorMap(color_map){
         this.color_map = color_map;
     }
 
-    this.draw = function(offx, offy, draw_mouse, mouse_x, mouse_y){
+    draw(offx, offy, draw_mouse, mouse_x, mouse_y){
         // fill('#111921');
         // rect(posx + offx, posy + offy, width, height, 20)
         this.drawAxes(this.axeNameX, this.axeNameY, offx, offy);
@@ -48,18 +51,18 @@ function BarChart(posx, posy, width, height){
             this.drawData(offx, offy, draw_mouse, mouse_x, mouse_y);
             this.drawYLim(offx, offy);
         }
-    };
+    }
 
-    this.getDrawArea = function(offx, offy){
+    getDrawArea(offx, offy){
         let axeXlpos = this.posx + this.width / 10;
         let axeXrpos = this.posx + this.width - this.width / 10;
         let axeYupos = this.posy + this.height / 5;
         let axeYdpos = this.posy + this.height - this.height / 5;
 
         return [axeXlpos, axeXrpos, axeYupos, axeYdpos];
-    };
+    }
 
-    this.drawAxes = function(xtxt, ytxt, offx, offy){
+    drawAxes(xtxt, ytxt, offx, offy){
         textAlign(CENTER);
         let yTextSize = Math.max(this.height / 20, 12);
         textSize(yTextSize);
@@ -96,9 +99,9 @@ function BarChart(posx, posy, width, height){
 
         line(axes0x + offx, axes0y + offy, axesXx + offx, axesXy + offy);
         line(axes0x + offx, axes0y + offy, axesYx + offx, axesYy + offy);
-    };
+    }
 
-    this.drawData = function(offx, offy, draw_mouse, mouse_x, mouse_y){
+    drawData(offx, offy, draw_mouse, mouse_x, mouse_y){
 
 		draw_mouse = false;
 	
@@ -131,9 +134,9 @@ function BarChart(posx, posy, width, height){
         let mouse_highlight_pos = 0;
         let min_mousedist = gWidth;
 
-        for(var i = 0; i < xData.length; i++){
-            rel_x_values[i] = map_range(i, 0, xData.length, drawArea[0], drawArea[1]);
-            rel_y_values[i] = map_range(yData[i], minVal, maxVal, 0, -gHeight);
+        for(let i = 0; i < xData.length; i++){
+            rel_x_values[i] = this.map_range(i, 0, xData.length, drawArea[0], drawArea[1]);
+            rel_y_values[i] = this.map_range(yData[i], minVal, maxVal, 0, -gHeight);
             //if(draw_mouse && Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
             //    mouse_y_data = rel_y_values[i];
             //    mouse_x_data_pos = rel_x_values[i] + offx;
@@ -169,7 +172,7 @@ function BarChart(posx, posy, width, height){
                 color_pairs = this.color_map.getColorPairs();
 
                 for(let i = 0; i < color_pairs.length; i++){
-                    grad.addColorStop(1-map_range_hard(color_pairs[i][0], minX, maxX, 0, 1), color_pairs[i][1]);
+                    grad.addColorStop(1-this.map_range_hard(color_pairs[i][0], minX, maxX, 0, 1), color_pairs[i][1]);
                 };
                 drawingContext.strokeStyle = grad;
                 drawingContext.fillStyle = grad;
@@ -179,12 +182,12 @@ function BarChart(posx, posy, width, height){
         //noFill();
 
 		if(rel_x_values.length > 1){
-			for(var i = 0; i < xData.length; i++){
+			for(let i = 0; i < xData.length; i++){
 				
-				x = rel_x_values[i] + offx;
-				w = gWidth / rel_x_values.length;
-				y = drawArea[3] + offy;
-				h = (rel_y_values[i]);
+				let x = rel_x_values[i] + offx;
+				let w = gWidth / rel_x_values.length;
+				let y = drawArea[3] + offy;
+				let h = (rel_y_values[i]);
 				
 				rect(x, y, w, h);
 			}
@@ -212,7 +215,7 @@ function BarChart(posx, posy, width, height){
                 fill(120, 130, 155);
                 stroke(120, 130, 155);
 
-                let highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
+                let highlight_text = this.trim_number_to_string(mouse_highlight_value) + " " + this.unit;
                 let t_width = textWidth(highlight_text);
 
                 // draw line
@@ -237,9 +240,9 @@ function BarChart(posx, posy, width, height){
         stroke(0);
         // var endTime = performance.now();
         // console.log(`${endTime - startTime} milliseconds for drawing ${this.axeNameY}`);
-    };
+    }
 
-    this.drawYLim = function(offx, offy){
+    drawYLim(offx, offy){
 
         let yData = this.data[1];
 
@@ -262,21 +265,21 @@ function BarChart(posx, posy, width, height){
         textSize(text_size);
         fill(120, 130, 155);
 
-        text(trim_number_to_string(minVal), yTextX + offx, drawArea[3] - gHeight / 10 + offy);
-        text(trim_number_to_string(maxVal), yTextX + offx, drawArea[2] + gHeight / 10 + offy);
+        text(this.trim_number_to_string(minVal), yTextX + offx, drawArea[3] - gHeight / 10 + offy);
+        text(this.trim_number_to_string(maxVal), yTextX + offx, drawArea[2] + gHeight / 10 + offy);
 
-    };
+    }
 
-    this.drawAreaContains = function(mouse_x, mouse_y, offx, offy){
+    drawAreaContains(mouse_x, mouse_y, offx, offy){
         let drawArea = this.getDrawArea();
         let axeXlpos = drawArea[0];
         let axeXrpos = drawArea[1];
         let axeYupos = drawArea[2];
         let axeYdpos = drawArea[3];
         return (mouse_x >= axeXlpos + offx && mouse_x <= axeXrpos + offx && mouse_y >= axeYupos + offy && mouse_y <= axeYdpos + offy);
-    };
+    }
 
-    function trim_number_to_string(number){
+    trim_number_to_string(number){
         if(typeof(number) == "number" && number.toString().length > 6){
             number = number.toString().split(".");
             if(number[0].length >= 6){
@@ -292,30 +295,30 @@ function BarChart(posx, posy, width, height){
         return number.toString();
     }
 
-    function map_range(value, low1, high1, low2, high2) {
+    map_range(value, low1, high1, low2, high2) {
         return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-    };
-    function map_range_hard(value, low1, high1, low2, high2) {
+    }
+    map_range_hard(value, low1, high1, low2, high2) {
         return Math.max(Math.min(low2 + (high2 - low2) * (value - low1) / (high1 - low1), high2), low2);
-    };
+    }
 
 
-    this.max = function(numbers){
+    max(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] > m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};
-    this.min = function(numbers){
+	}
+    min(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] < m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};	
-};
+	}
+}

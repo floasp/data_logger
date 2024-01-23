@@ -98,11 +98,12 @@ function setup() {
 	
 	manager.addWidget(ngwidget_air_temp_minmax, 0, 5);
 
-    server_url = "http://asperger.home/";
+    server_url = "enter url here";
 
     dataSource_air = new DataSource(server_url);
+    dataSource_air.setupSource(48, "time", "from=2023-06-01 00:00:00&to=2024-12-31 23:59:59");
     //dataSource_air.setupSource(48, "time", "from=2023-05-01 00:00:00&to=2024-12-31 23:59:59");
-    dataSource_air.setupSource(48, "top", "top=50000");
+    //dataSource_air.setupSource(48, "top", "top=50000");
     dataSource_air.addObserver(gwidget_air_temp, 0);
     dataSource_air.addObserver(gwidget_air_pres, 1);
     dataSource_air.addObserver(gwidget_air_humi, 2);
@@ -139,8 +140,8 @@ function draw() {
     manager.drawAll(mouseX, mouseY);
 
     sourceManager.nextStep();
-};
+}
 
 function windowResized() {
     resizeCanvas(windowWidth - 20, windowHeight - 20);
-};
+}

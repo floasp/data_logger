@@ -1,20 +1,22 @@
-function LatestValueWidget(pos_array, data){
-    this.posx = pos_array[0];
-    this.posy = pos_array[1];
-    this.width = pos_array[2];
-    this.height = pos_array[3];
-    this.gridSpanX = pos_array[4];
-    this.gridSpanY = pos_array[5];
-    this.gridPos = undefined;
-    this.updatePending = true;
-    this.name = "";
-    this.datatype = "";
-    this.unit = "";
-    this.value = undefined;
-    this.timestamp = undefined;
+class LatestValueWidget{
+    constructor(pos_array, data){
+        this.posx = pos_array[0];
+        this.posy = pos_array[1];
+        this.width = pos_array[2];
+        this.height = pos_array[3];
+        this.gridSpanX = pos_array[4];
+        this.gridSpanY = pos_array[5];
+        this.gridPos = undefined;
+        this.updatePending = true;
+        this.name = "";
+        this.datatype = "";
+        this.unit = "";
+        this.value = undefined;
+        this.timestamp = undefined;
+    }
 
     // observer pattern, gets called by the observable
-    this.notify = function(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit){
         this.name = name;
         this.datatype = datatype;
         this.unit = unit;
@@ -28,9 +30,9 @@ function LatestValueWidget(pos_array, data){
         // this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);
-    };
+    }
 
-    this.draw = function(offx, offy, mouse_x, mouse_y){
+    draw(offx, offy, mouse_x, mouse_y){
         // let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
         if(this.updatePending){
             fill('#111921');
@@ -51,7 +53,7 @@ function LatestValueWidget(pos_array, data){
                 text(this.datatype, this.posx + this.width / 2 + offx, this.posy + this.height / 11 * 4  + offy);
                 fill(180, 200, 235);
                 textSize(this.height / 5);
-                text(trim_number_to_string(this.value) + " " + this.unit, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 3 + offy);
+                text(this.trim_number_to_string(this.value) + " " + this.unit, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 3 + offy);
                 fill(145, 155, 180);
                 textSize(this.height / 15);
                 text(this.timestamp, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 4 + offy);
@@ -60,9 +62,9 @@ function LatestValueWidget(pos_array, data){
 
             this.updatePending = false;
         }
-    };
+    }
 
-    function trim_number_to_string(number){
+    trim_number_to_string(number){
         if(typeof(number) == "number" && number.toString().length > 6){
             number = number.toString().split(".");
             if(number[0].length >= 6){
@@ -77,7 +79,7 @@ function LatestValueWidget(pos_array, data){
         return number.toString();
     }
 
-    this.contains = function(mouse_x, mouse_y){
+    contains(mouse_x, mouse_y){
         return (mouse_x >= this.posx && mouse_x <= this.posx + this.width && mouse_y >= this.posy && mouse_y <= this.posy + this.height);
-    };
+    }
 }

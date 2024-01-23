@@ -1,12 +1,14 @@
-function DataFilter_DayMinMax(){
-	// works like a datasource for widgets but gets its data from a real Datasource.
-	// after modifying the data (filtering) it notifies the observer widgets
-	// creates list of min and max values for each day
-	
-	this.observers = [];
+class DataFilter_DayMinMax{
+	constructor(){
+		// works like a datasource for widgets but gets its data from a real Datasource.
+		// after modifying the data (filtering) it notifies the observer widgets
+		// creates list of min and max values for each day
+		
+		this.observers = [];
+	}
     
     // observer pattern, gets called by the observable (DataSource or another Filter)
-    this.notify = function(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit){
 		
         let data = [];
 		let new_timestamps = [];
@@ -58,27 +60,27 @@ function DataFilter_DayMinMax(){
 		data = [maxs, mins];
 		
 		this.notifyObservers(new_timestamps, data, name, datatype, unit);
-    };
+    }
 	
 	
-    this.addObserver = function(observer){
+    addObserver(observer){
         this.observers.push(observer);
     }
-    this.removeObserver = function(observer){
+    removeObserver(observer){
         let index = this.observers.indexOf(observer);
         this.observers.splice(index, 1);
     }
-    this.notifyObservers = function(timestamps, values, name, datatype, unit){
+    notifyObservers(timestamps, values, name, datatype, unit){
         for(var i = 0; i < this.observers.length; i++){
             this.observers[i].notify(timestamps, values, name, datatype, unit);
         }
     }
 	
-	this.isSameDay = function(dmy1, dmy2){
+	isSameDay(dmy1, dmy2){
 		return dmy1[0] == dmy2[0] && dmy1[1] == dmy2[1] && dmy1[2] == dmy2[2];
 	}
 	
-	this.getDayMonthYear = function(timestamp){
+	getDayMonthYear(timestamp){
 		let year_str = timestamp.substring(0, 4);
 		let year_int = int(year_str);
 		let month_str = timestamp.substring(5, 7);
@@ -87,4 +89,4 @@ function DataFilter_DayMinMax(){
 		let day_int = int(day_str);
 		return [day_int, month_int, year_int];
 	}
-};
+}

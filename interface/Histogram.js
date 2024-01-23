@@ -1,21 +1,23 @@
-function Histogram(posx, posy, width, height){
-    this.posx = posx;
-    this.posy = posy;
-    this.width = width;
-    this.height = height;
-    this.gridPos = undefined;
-    this.unit = "";
+class Histogram{
+	constructor(posx, posy, width, height){
+		this.posx = posx;
+		this.posy = posy;
+		this.width = width;
+		this.height = height;
+		this.gridPos = undefined;
+		this.unit = "";
+		
+		this.originalData = undefined;
+		this.originalAxeNameX = undefined;
+		this.originalAxeNameY = undefined;
+		this.min = undefined;
+		this.max = undefined;
+		this.n = undefined;
+		
+		this.barchart = new BarChart(this.posx, this.posy, this.width, this.height);
+	}
 	
-	this.originalData = undefined;
-	this.originalAxeNameX = undefined;
-	this.originalAxeNameY = undefined;
-	this.min = undefined;
-	this.max = undefined;
-	this.n = undefined;
-	
-    this.barchart = new BarChart(this.posx, this.posy, this.width, this.height);
-	
-    this.setOrientation = function(orientation){
+    setOrientation(orientation){
         this.barchart.setOrientation(orientation);
 		if (orientation == "horizontal"){
 			this.barchart.setData(this.barchart.data, this.barchart.axeNameX, this.barchart.axeNameY, this.barchart.unit);
@@ -23,22 +25,22 @@ function Histogram(posx, posy, width, height){
 		else{ // switch axes here
 			this.barchart.setData(this.barchart.data, this.barchart.axeNameY, this.barchart.axeNameX, this.barchart.unit);
 		}
-    };
+    }
 	
-    this.setIntervals = function(n){
+    setIntervals(n){
 		this.n = n;
 		if (this.originalData != undefined){
 			this.setData(this.originalData, this.originalAxeNameX, this.originalAxeNameY, this.barchart.unit);
 		}
-    };
+    }
 	
-    this.setIntervalsWithLimit = function(min, max, n){
+    setIntervalsWithLimit(min, max, n){
         this.min = min;
 		this.max = max;
 		this.n = n;
-    };
+    }
 
-    this.setData = function(data, axeNameX, axeNameY, unit){
+    setData(data, axeNameX, axeNameY, unit){
 		
 		this.originalData = data;
 		this.originalAxeNameX = axeNameX;
@@ -67,11 +69,11 @@ function Histogram(posx, posy, width, height){
 				}
 				
 				for(let vi = 0; vi < values.length; vi++){
-					value = values[vi];
+					let value = values[vi];
 					if(value < min || value > max){
 						continue;
 					}
-					i = Math.floor((value - min)*this.n / (max - min));
+					let i = Math.floor((value - min)*this.n / (max - min));
 					hist_data[i] += 1;
 				}
 			}
@@ -83,48 +85,48 @@ function Histogram(posx, posy, width, height){
 		else{ // switch axes here
 			this.barchart.setData([interval_names, hist_data], axeNameY, axeNameX, unit);
 		}
-    };
+    }
 
-    this.setLineColor = function(color_array){
+    setLineColor(color_array){
         this.barchart.setLineColor(color_array);
     }
 
-    this.setLineColorStyle = function(style){
+    setLineColorStyle(style){
         this.barchart.setLineColorStyle(style);
     }
 
-    this.setColorMap = function(color_map){
+    setColorMap(color_map){
         this.barchart.setColorMap(color_map);
     }
 
-    this.draw = function(offx, offy, draw_mouse, mouse_x, mouse_y){
+    draw(offx, offy, draw_mouse, mouse_x, mouse_y){
 		this.barchart.draw(offx, offy, draw_mouse, mouse_x, mouse_y);
-    };
+    }
 
-    this.getDrawArea = function(offx, offy){
+    getDrawArea(offx, offy){
 		this.barchart.getDrawArea(offx, offy);
-    };
+    }
 
-    this.drawAreaContains = function(mouse_x, mouse_y, offx, offy){
+    drawAreaContains(mouse_x, mouse_y, offx, offy){
 		this.barchart.drawAreaContains(mouse_x, mouse_y, offx, offy);
-    };
+    }
 
-    this.getmax = function(numbers){
+    getmax(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] > m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};
-    this.getmin = function(numbers){
+	}
+    getmin(numbers){
 		let m = numbers[0];
-		for(i = 0; i < numbers.length; i++){
+		for(let i = 0; i < numbers.length; i++){
 			if (numbers[i] < m){
 				m = numbers[i]
 			}
 		}
 		return m;
-	};
-};
+	}
+}

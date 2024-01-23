@@ -1,25 +1,27 @@
-function HistogramWidget(pos_array, data){
-    this.posx = pos_array[0];
-    this.posy = pos_array[1];
-    this.width = pos_array[2];
-    this.height = pos_array[3];
-    this.gridSpanX = pos_array[4];
-    this.gridSpanY = pos_array[5];
-    this.gridPos = undefined;
-    this.updatePending = true;
-    this.name = "";
-    this.datatype = "";
-    this.unit = "";
-    this.axeNameX = "";
-    this.axeNameY = "";
-    this.prev_mouseX = 0;
-    this.prev_mouseY = 0;
+class HistogramWidget{
+    constructor(pos_array, data){
+        this.posx = pos_array[0];
+        this.posy = pos_array[1];
+        this.width = pos_array[2];
+        this.height = pos_array[3];
+        this.gridSpanX = pos_array[4];
+        this.gridSpanY = pos_array[5];
+        this.gridPos = undefined;
+        this.updatePending = true;
+        this.name = "";
+        this.datatype = "";
+        this.unit = "";
+        this.axeNameX = "";
+        this.axeNameY = "";
+        this.prev_mouseX = 0;
+        this.prev_mouseY = 0;
 
-    this.histogram = new Histogram(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
-    this.histogram.setData(data, this.axeNameX, this.axeNameY, this.unit);
+        this.histogram = new Histogram(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
+        this.histogram.setData(data, this.axeNameX, this.axeNameY, this.unit);
+    }
 
     // observer pattern, gets called by the observable
-    this.notify = function(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit){
         this.name = name;
         this.datatype = datatype;
         this.unit = unit;
@@ -29,37 +31,37 @@ function HistogramWidget(pos_array, data){
         this.histogram.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);
-    };
+    }
 	
-    this.setIntervalsWithLimit = function(min, max, n){
+    setIntervalsWithLimit(min, max, n){
         this.histogram.setIntervalsWithLimit(min, max, n);
-    };
+    }
 	
-    this.setIntervals = function(n){
+    setIntervals(n){
         this.histogram.setIntervals(n);
-    };
+    }
 
-    this.setContinousSpline = function(isSpline){
+    setContinousSpline(isSpline){
         this.histogram.setContinousSpline(isSpline);
-    };
+    }
 
-    this.setData = function(data){
+    setData(data){
         this.histogram.setData(data);
-    };
+    }
 
-    this.setLineColor = function(color_array){
+    setLineColor(color_array){
         this.histogram.setLineColor(color_array);
-    };
+    }
 
-    this.setLineColorStyle = function(style){
+    setLineColorStyle(style){
         this.histogram.setLineColorStyle(style);
-    };
+    }
 
-    this.setColorMap = function(color_map){
+    setColorMap(color_map){
         this.histogram.setColorMap(color_map);
-    };
+    }
 
-    this.draw = function(offx, offy, mouse_x, mouse_y){
+    draw(offx, offy, mouse_x, mouse_y){
         let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
         if(this.updatePending || draw_mouse && (this.prev_mouseX != mouse_x || this.prev_mouseY != mouse_y)){
             fill('#111921');
@@ -78,9 +80,9 @@ function HistogramWidget(pos_array, data){
             this.prev_mouseX = mouse_x;
             this.prev_mouseY = mouse_y;
         }
-    };
+    }
 
-    this.contains = function(mouse_x, mouse_y){
+    contains(mouse_x, mouse_y){
         return (mouse_x >= this.posx && mouse_x <= this.posx + this.width && mouse_y >= this.posy && mouse_y <= this.posy + this.height);
-    };
-};
+    }
+}
