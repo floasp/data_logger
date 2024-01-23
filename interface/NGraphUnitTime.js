@@ -180,7 +180,7 @@ class NGraphUnitTime{
         let n = Math.ceil(xData.length / gWidth);
 
         for(let i = 0; i < xData.length / n; i++){
-            let x_value = datetime_str_to_int(xData[i*n]);
+            let x_value = datetime_to_int(xData[i*n]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
 			for(let id = 1; id < this.data.length; id++){
 				rel_y_values[id][i] = map_range(yData[id][i*n], minVal, maxVal, actual_y_up, actual_y_down);
@@ -197,7 +197,7 @@ class NGraphUnitTime{
             //console.log(Math.round(rel_x_values[i]));
         }
         if(!Number.isInteger(xData.length / n)){ // to include the last number
-            let x_value = datetime_str_to_int(xData[xData.length-1]);
+            let x_value = datetime_to_int(xData[xData.length-1]);
             rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
 			for(let id = 1; id < this.data.length; id++){
 				rel_y_values.push(map_range(yData[id][xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));

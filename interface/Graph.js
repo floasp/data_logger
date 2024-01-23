@@ -135,7 +135,7 @@ class Graph{
         let n = Math.ceil(xData.length / gWidth);
 
         for(let i = 0; i < xData.length / n; i++){
-            let x_value = datetime_str_to_int(xData[i*n]);
+            let x_value = datetime_to_int(xData[i*n]);
             rel_x_values[i] = map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]);
             rel_y_values[i] = map_range(yData[i*n], minVal, maxVal, actual_y_up, actual_y_down);
             if(Math.abs(Math.round(rel_x_values[i] + offx) - mouse_x) < min_mousedist){
@@ -148,7 +148,7 @@ class Graph{
             //console.log(Math.round(rel_x_values[i]));
         }
         if(!Number.isInteger(xData.length / n)){ // to include the last number
-            let x_value = datetime_str_to_int(xData[xData.length-1]);
+            let x_value = datetime_to_int(xData[xData.length-1]);
             rel_x_values.push(map_range(x_value, datetime_to_int(minDate), datetime_to_int(maxDate), drawArea[0], drawArea[1]));
             rel_y_values.push(map_range(yData[xData.length-1], minVal, maxVal, actual_y_up, actual_y_down));
             if(Math.abs(Math.round(rel_x_values[rel_x_values.length - 1] + offx) - mouse_x) < min_mousedist){
