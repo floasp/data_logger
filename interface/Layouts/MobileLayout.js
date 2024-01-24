@@ -41,13 +41,16 @@ class MobileLayout{
         this.ngwidget_air_temp_minmax.setColorMap([DLI_PASTEL_TEMP_COLORMAP, DLI_PASTEL_TEMP_COLORMAP]);
     
         this.gwidget_air_pres.setLineColor(DLI_PASTEL_BLUE);
-        this.gwidget_air_humi.setLineColor(DLI_PASTEL_BLUE_DARKER);
         this.gwidget_air_eco2.setLineColor(DLI_PASTEL_GREEN);
         this.gwidget_air_tvoc.setLineColor(DLI_PASTEL_GREEN_DARKER);
         this.hwidget_air_pres.setLineColor(DLI_PASTEL_BLUE);
-        this.hwidget_air_humi.setLineColor(DLI_PASTEL_BLUE_DARKER);
         this.hwidget_air_eco2.setLineColor(DLI_PASTEL_GREEN);
         this.hwidget_air_tvoc.setLineColor(DLI_PASTEL_GREEN_DARKER);
+
+        this.gwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.hwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        this.hwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
     }
 
     addToManager(widgetmanager){
