@@ -35,9 +35,9 @@ class MobileLayout{
         this.gwidget_air_temp.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.hwidget_air_temp.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.temp_map = new ColorMap();
-        this.temp_map.addColor(20, 'blue');
-        this.temp_map.addColor(22.5, 'purple');
-        this.temp_map.addColor(25, 'red');
+        this.temp_map.addColor(20, '#4466FF');
+        this.temp_map.addColor(22.5, '#BB44BB');
+        this.temp_map.addColor(25, '#FF6666');
         this.gwidget_air_temp.setColorMap(this.temp_map);
         this.hwidget_air_temp.setColorMap(this.temp_map);
 	
@@ -45,21 +45,14 @@ class MobileLayout{
         this.ngwidget_air_temp_minmax.setLineColorStyle([DLI_ABS_MAP_COLOR, DLI_ABS_MAP_COLOR]);
         this.ngwidget_air_temp_minmax.setColorMap([this.temp_map, this.temp_map]);
     
-        this.gwidget_air_pres.setLineColor([255, 255, 0]);
-        this.gwidget_air_humi.setLineColor([0, 255, 0]);
-        this.gwidget_air_eco2.setLineColor([0, 255, 255]);
-        this.hwidget_air_pres.setLineColor([255, 255, 0]);
-        this.hwidget_air_humi.setLineColor([0, 255, 0]);
-        this.hwidget_air_eco2.setLineColor([0, 255, 255]);
-    
-        //gwidget_air_tvoc.setLineColor([0, 0, 255]);
-        this.gwidget_air_tvoc.setLineColorStyle(DLI_REL_MAP_COLOR);
-        this.hwidget_air_tvoc.setLineColorStyle(DLI_REL_MAP_COLOR);
-        this.tvoc_map = new ColorMap();
-        this.tvoc_map.addColor(0, 'black');
-        this.tvoc_map.addColor(1, 'white');
-        this.gwidget_air_tvoc.setColorMap(this.tvoc_map);
-        this.hwidget_air_tvoc.setColorMap(this.tvoc_map);
+        this.gwidget_air_pres.setLineColor([160, 180, 255]);
+        this.gwidget_air_humi.setLineColor([160, 180, 255]);
+        this.gwidget_air_eco2.setLineColor([180, 255, 180]);
+        this.gwidget_air_tvoc.setLineColor([180, 255, 180]);
+        this.hwidget_air_pres.setLineColor([160, 180, 255]);
+        this.hwidget_air_humi.setLineColor([160, 180, 255]);
+        this.hwidget_air_eco2.setLineColor([180, 255, 180]);
+        this.hwidget_air_tvoc.setLineColor([180, 255, 180]);
     }
 
     addToManager(widgetmanager){
