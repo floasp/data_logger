@@ -21,7 +21,7 @@ class Widget{
             // drawingContext.shadowOffsetY = 5;
             // drawingContext.shadowBlur = 2;
             // drawingContext.shadowColor = 'black';
-            fill('#111921');
+            fill(DLI_WIDGET_COLOR_BG);
             rect(this.posx + offx, this.posy + offy, this.width, this.height, 20)
             this.updatePending = false;
         }

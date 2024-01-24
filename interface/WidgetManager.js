@@ -72,9 +72,6 @@ class WidgetManager{
                 console.log("Failed to add widget. Space already used.");
             }
         }
-        else{
-        }
-        console.log(this.x_count, this.y_count);
     }
 
     removeWidget(x, y){

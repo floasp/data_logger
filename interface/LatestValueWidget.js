@@ -35,26 +35,26 @@ class LatestValueWidget{
     draw(offx, offy, mouse_x, mouse_y){
         // let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
         if(this.updatePending){
-            fill('#111921');
+            fill(DLI_WIDGET_COLOR_BG);
             rect(this.posx + offx, this.posy + offy, this.width, this.height, 20);
             // noFill();
             // rect(posx + offx + 20, posy + offx + 20, width - 40, height - 40);
 
             textAlign(CENTER);
             textSize(this.height / 15);
-            fill(180, 200, 235);
+            fill(DLI_TEXT_COLOR);
             text(this.name, this.posx + this.width / 2 + offx, this.posy + this.height / 7 + offy);
 
             if(this.value != undefined){
             // fill(180, 200, 235);
             // fill(120, 130, 155);
-                fill(145, 155, 180);
+                fill(DLI_TEXT_SMALL_COLOR);
                 textSize(this.height / 10);
                 text(this.datatype, this.posx + this.width / 2 + offx, this.posy + this.height / 11 * 4  + offy);
-                fill(180, 200, 235);
+                fill(DLI_TEXT_COLOR);
                 textSize(this.height / 5);
                 text(this.trim_number_to_string(this.value) + " " + this.unit, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 3 + offy);
-                fill(145, 155, 180);
+                fill(DLI_TEXT_SMALL_COLOR);
                 textSize(this.height / 15);
                 text(this.timestamp, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 4 + offy);
             }

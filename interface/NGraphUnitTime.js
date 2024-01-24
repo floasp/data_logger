@@ -88,7 +88,7 @@ class NGraphUnitTime{
         textSize(yTextSize);
         // fill(180, 200, 235);
         // fill(120, 130, 155);
-        fill(145, 155, 180);
+        fill(DLI_TEXT_SMALL_COLOR);
 
         let xTextX = this.posx + this.width / 2 + offx;
         let xTextY = this.posy + this.height - this.height / 30 + offy;
@@ -295,8 +295,8 @@ class NGraphUnitTime{
 				textAlign(LEFT);
 				let text_size = max(this.height / 30, 10);
 				textSize(text_size);
-				fill(120, 130, 155);
-				stroke(120, 130, 155);
+				fill(DLI_TEXT_DARKER_COLOR);
+				stroke(DLI_TEXT_DARKER_COLOR);
 
 				let highlight_text = trim_number_to_string(mouse_highlight_value) + " " + this.unit;
 				let t_width = textWidth(highlight_text);
@@ -304,7 +304,7 @@ class NGraphUnitTime{
 				// draw line
 				stroke(0);
 				line(mouse_x_data_pos + offx, drawArea[3] + offy, mouse_x_data_pos + offx, drawArea[3] - text_size + offy);
-				stroke(120, 130, 155);
+				stroke(DLI_TEXT_DARKER_COLOR);
 				line(mouse_x_data_pos - pad - 3, mouse_y_data + offy - pad - 3, textX + t_width / 2 + pad, textY + pad);
 				stroke(0);
 				// draw value text
@@ -346,7 +346,7 @@ class NGraphUnitTime{
         textAlign(RIGHT);
         let text_size = max(this.height / 30, 10);
         textSize(text_size);
-        fill(120, 130, 155);
+        fill(DLI_TEXT_DARKER_COLOR);
 
         text(trim_number_to_string(minVal) + " " + this.unit, yTextX + offx, drawArea[3] - gHeight / 10 + offy);
         text(trim_number_to_string(maxVal) + " " + this.unit, yTextX + offx, drawArea[2] + gHeight / 10 + offy);

@@ -17,6 +17,7 @@ function setGridSize(windowWidth, windowHeight){
 }
 
 function setup() {
+    document.body.style.background = DLI_COLOR_BG;
     frameRate(10);
     createCanvas(windowWidth - 20, windowHeight - 20);
 

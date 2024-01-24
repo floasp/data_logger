@@ -61,14 +61,14 @@ class NGraphWidget{
     draw(offx, offy, mouse_x, mouse_y){
         let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
         if(this.updatePending || draw_mouse && (this.prev_mouseX != mouse_x || this.prev_mouseY != mouse_y)){
-            fill('#111921');
+            fill(DLI_WIDGET_COLOR_BG);
             rect(this.posx + offx, this.posy + offy, this.width, this.height, 20);
             // noFill();
             // rect(posx + offx + 20, posy + offx + 20, width - 40, height - 40);
 
             textAlign(CENTER);
             textSize(this.height / 15);
-            fill(180, 200, 235);
+            fill(DLI_TEXT_COLOR);
             text(this.name, this.posx + this.width / 2 + offx, this.posy + this.height / 7 + offy);
 
             this.graph.draw(offx, offy, draw_mouse, mouse_x, mouse_y);
