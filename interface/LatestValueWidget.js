@@ -36,7 +36,11 @@ class LatestValueWidget{
         // let draw_mouse = this.contains(mouse_x - offx, mouse_y - offy);
         if(this.updatePending){
             fill(DLI_WIDGET_COLOR_BG);
-            rect(this.posx + offx, this.posy + offy, this.width, this.height, 20);
+            if(!DLI_WIDGET_HAS_BORDER){
+                noStroke();
+            }
+            rect(this.posx + offx, this.posy + offy, this.width, this.height, DLI_WIDGET_EDGE_RADIUS);
+            stroke(0, 0, 0);
             // noFill();
             // rect(posx + offx + 20, posy + offx + 20, width - 40, height - 40);
 

@@ -22,7 +22,11 @@ class Widget{
             // drawingContext.shadowBlur = 2;
             // drawingContext.shadowColor = 'black';
             fill(DLI_WIDGET_COLOR_BG);
-            rect(this.posx + offx, this.posy + offy, this.width, this.height, 20)
+            if(!DLI_WIDGET_HAS_BORDER){
+                noStroke();
+            }
+            rect(this.posx + offx, this.posy + offy, this.width, this.height, DLI_WIDGET_EDGE_RADIUS);
+            stroke(0, 0, 0);
             this.updatePending = false;
         }
     }

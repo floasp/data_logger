@@ -5,7 +5,7 @@ var PADDING = GRID_BASE_SIZE / 20;
 // makes GRID_BASE_SIZE so that the smaller side contains 8 Squares.
 function setGridSize(windowWidth, windowHeight){
     if(windowWidth > windowHeight){
-        GRID_BASE_SIZE = Math.floor(windowHeight / 10);
+        GRID_BASE_SIZE = Math.floor(windowWidth / 20);
         PADDING = GRID_BASE_SIZE / 20;
         this.layout = new DesktopLayout();
     }
@@ -53,7 +53,7 @@ function draw() {
 }
 
 function windowResized() {
-    console.log("resized");
+    clear();
     resizeCanvas(windowWidth - 20, windowHeight - 20);
     manager.clearWidgets();
     setGridSize(windowWidth - 20, windowHeight - 20);

@@ -1,4 +1,4 @@
-class DesktopLayout{
+class WideLayout{
     constructor(){
         this.gwidget_air_temp = new GraphWidget(createWidgetSize(10, 2), undefined);
         this.gwidget_air_pres = new GraphWidget(createWidgetSize(10, 2), undefined);

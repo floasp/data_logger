@@ -88,11 +88,16 @@ class Graph{
         let axeYdpos = drawArea[3];
 
         let axes0x = axeXlpos;
-        let axes0y = axeYdpos
+        let axes0y = axeYdpos;
         let axesXx = axeXrpos;
-        let axesXy = axeYdpos
+        let axesXy = axeYdpos;
         let axesYx = axeXlpos;
-        let axesYy = axeYupos
+        let axesYy = axeYupos;
+
+        fill(DLI_GRAPH_COLOR_BG);
+        noStroke();
+        rect(axes0x + offx, axes0y + offy, axesXx - axes0x, axesYy - axes0y);
+        stroke(DLI_GRAPH_STROKE_COLOR);
 
         line(axes0x + offx, axes0y + offy, axesXx + offx, axesXy + offy);
         line(axes0x + offx, axes0y + offy, axesYx + offx, axesYy + offy);
