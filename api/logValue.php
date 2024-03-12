@@ -1,5 +1,4 @@
 <?php
-
     function getNumberOfValues($conn, $ID){
         $sql = "SELECT * FROM ID_list WHERE ID = $ID";
 
@@ -46,60 +45,64 @@
     $token = "";
     $values = "";
 
+    $requester = "";
+
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        // collect value of input field
-        $sensorID = $_GET['sensorID'];
-        $token = $_GET['token'];
-        $values = $_GET['values'];
-        if (empty($sensorID) || empty($values) || empty($token)) {
-            echo "not enough arguments.";
+        $requester = $_GET;
+    }
+    else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $requester = $_POST;
+    }
+    else{
+        return;
+    }
+
+    // collect value of input field
+    $sensorID = $requester['sensorID'];
+    $token = $requester['token'];
+    $values = $requester['values'];
+    if (empty($sensorID) || empty($values) || empty($token)) {
+        echo "not enough arguments.";
+        return;
+    }
+    
+    include 'dbsecrets.php';
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $real_token = getToken($conn, $sensorID);
+
+    if(checkToken($token, $real_token)){
+        //$nv = getNumberOfValues($conn, $sensorID);
+        $value_array = explode(";", $values);
+        $nv = count($value_array);
+        $value_array = implode(",", $value_array);
+
+        $colnames = "";
+        for($i = 0; $i < $nv; $i++){
+            $colnames .= "value" . $i . ", ";
+        }
+        $colnames = substr($colnames, 0, -2);
+
+        $sql = "INSERT INTO Sensorvalues_$sensorID (timestamp, $colnames)
+                VALUES (NOW(), $value_array)";
+
+        // echo $sql . "</br>";
+
+        if ($conn->query($sql) === TRUE) {
+            echo TRUE;
         } else {
-            //echo $name;
-            $servername = "localhost";
-            $username = "api";
-            $password = "api1234api";
-            $dbname = "logger01";
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $real_token = getToken($conn, $sensorID);
-
-            if(checkToken($token, $real_token)){
-                //$nv = getNumberOfValues($conn, $sensorID);
-                $value_array = explode(";", $values);
-                $nv = count($value_array);
-                $value_array = implode(",", $value_array);
-
-                $colnames = "";
-                for($i = 0; $i < $nv; $i++){
-                    $colnames .= "value" . $i . ", ";
-                }
-                $colnames = substr($colnames, 0, -2);
-    
-                $sql = "INSERT INTO Sensorvalues_$sensorID (timestamp, $colnames)
-                        VALUES (NOW(), $value_array)";
-    
-                // echo $sql . "</br>";
-    
-                if ($conn->query($sql) === TRUE) {
-                    echo TRUE;
-                } else {
-                    echo "Error: " . $sql . "<br>" . $conn->error;
-                }
-            }
-            else{
-                println("wrong token");
-            }
-
-            $conn->close();
+            echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
     else{
-        echo "no data given.";
+        println("wrong token");
     }
+
+    $conn->close();
 ?>

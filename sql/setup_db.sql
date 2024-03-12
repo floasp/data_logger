@@ -12,5 +12,6 @@ CREATE TABLE `ID_list` (
  `name` varchar(64) NOT NULL,
  `short_name` varchar(5) NOT NULL,
  `datatypes` varchar(255) NOT NULL,
+ `typenames` varchar(1024) NOT NULL,
  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4

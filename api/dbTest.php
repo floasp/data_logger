@@ -4,9 +4,7 @@
     header('Access-Control-Allow-Methods: GET, POST');
     header("Access-Control-Allow-Headers: X-Requested-With");
     
-    $servername = "localhost";
-    $username = "api";
-    $password = "api1234api";
+    include 'dbsecrets.php';
 
     // Create connection
     $conn = new mysqli($servername, $username, $password);
