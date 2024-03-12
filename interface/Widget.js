@@ -11,7 +11,7 @@ class Widget{
     }
 
     // observer pattern, gets called by the observable
-    notify(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit, typename){
         this.updatePending = true;
     }
 

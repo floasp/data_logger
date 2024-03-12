@@ -10,15 +10,17 @@ class LatestValueWidget{
         this.updatePending = true;
         this.name = "";
         this.datatype = "";
+        this.typename = "";
         this.unit = "";
         this.value = undefined;
         this.timestamp = undefined;
     }
 
     // observer pattern, gets called by the observable
-    notify(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit, typename){
         this.name = name;
         this.datatype = datatype;
+        this.typename = typename;
         this.unit = unit;
         this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
         this.axeNameY = datatype;
@@ -47,7 +49,7 @@ class LatestValueWidget{
             textAlign(CENTER);
             textSize(this.height / 15);
             fill(DLI_TEXT_COLOR);
-            text(this.name, this.posx + this.width / 2 + offx, this.posy + this.height / 7 + offy);
+            text(this.typename, this.posx + this.width / 2 + offx, this.posy + this.height / 7 + offy);
 
             if(this.value != undefined){
             // fill(180, 200, 235);

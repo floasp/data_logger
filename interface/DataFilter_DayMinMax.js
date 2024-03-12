@@ -8,7 +8,7 @@ class DataFilter_DayMinMax{
 	}
     
     // observer pattern, gets called by the observable (DataSource or another Filter)
-    notify(timestamps, values, name, datatype, unit){
+    notify(timestamps, values, name, datatype, unit, typename){
 		
         let data = [];
 		let new_timestamps = [];
@@ -59,7 +59,7 @@ class DataFilter_DayMinMax{
 		
 		data = [maxs, mins];
 		
-		this.notifyObservers(new_timestamps, data, name, datatype, unit);
+		this.notifyObservers(new_timestamps, data, name, datatype, unit, typename);
     }
 	
 	
@@ -70,9 +70,9 @@ class DataFilter_DayMinMax{
         let index = this.observers.indexOf(observer);
         this.observers.splice(index, 1);
     }
-    notifyObservers(timestamps, values, name, datatype, unit){
+    notifyObservers(timestamps, values, name, datatype, unit, typename){
         for(var i = 0; i < this.observers.length; i++){
-            this.observers[i].notify(timestamps, values, name, datatype, unit);
+            this.observers[i].notify(timestamps, values, name, datatype, unit, typename);
         }
     }
 	

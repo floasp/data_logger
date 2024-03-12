@@ -26,6 +26,8 @@ class DataSource{
         this.datatypeIDs = [];
         // datatypes of the sensor. To access the datatype of a specific observer use datatypes[observerDataIndexes[observer]]
         this.datatypes = [];
+        // displayed names for the sensor values, if none are available they're set to undefined.
+        this.typenames = undefined;
         // units for the datatypes. Same as above
         this.units = [];
         // with the top filter, the data is received in reversed order and needs to be reversed again in the dataReceived function.
@@ -45,7 +47,7 @@ class DataSource{
     }
     notifyObservers(){
         for(let i = 0; i < this.observers.length; i++){
-            this.observers[i].notify(this.timestamps, this.values[this.observerDataIndexes[i]], this.name, this.datatypes[i], this.units[i]);
+            this.observers[i].notify(this.timestamps, this.values[this.observerDataIndexes[i]], this.name, this.datatypes[i], this.units[i], this.typenames[this.observerDataIndexes[i]]);
         }
     }
 
@@ -68,7 +70,12 @@ class DataSource{
         let obj = JSON.parse(data);
         this.name = obj.name;
         this.datatypeIDs = obj.datatypes.split(";");
+        this.typenames = obj.typenames.split(";");
+        if (this.typenames.length == 0){
+            this.typenames = undefined;
+        }
         // console.log(datatypes);
+        //console.log(this.typenames);
         this.waitingForData = false;
         this.getDatatypes();
     }
