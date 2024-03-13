@@ -3,8 +3,8 @@ class DesktopLayout{
         this.gwidget_air_temp = new GraphWidget(createWidgetSize(10, 2), undefined);
         this.gwidget_air_pres = new GraphWidget(createWidgetSize(10, 2), undefined);
         this.gwidget_air_humi = new GraphWidget(createWidgetSize(10, 2), undefined);
-        this.gwidget_air_eco2 = new GraphWidget(createWidgetSize(10, 2), undefined);
-        this.gwidget_air_tvoc = new GraphWidget(createWidgetSize(10, 2), undefined);
+        this.gwidget_air_eco2 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_air_tvoc = new GraphWidget(createWidgetSize(5, 2), undefined);
         
         this.ngwidget_air_temp_minmax = new NGraphWidget(createWidgetSize(10, 2), undefined);
     
@@ -13,6 +13,11 @@ class DesktopLayout{
         this.lvwidget_air_humi = new LatestValueWidget(createWidgetSize(2, 2), undefined);
         this.lvwidget_air_eco2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
         this.lvwidget_air_tvoc = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+
+        this.lvwidget_air_temp.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_air_temp.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.lvwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
     
         this.hwidget_air_temp = new HistogramWidget(createWidgetSize(2, 2), undefined);
         this.hwidget_air_pres = new HistogramWidget(createWidgetSize(2, 2), undefined);
@@ -47,6 +52,34 @@ class DesktopLayout{
         this.hwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.gwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         this.hwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        
+        this.gwidget_tem1 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_tem2 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_hum1 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_hum2 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        
+        this.lvwidget_tem1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_tem2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_hum1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_hum2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        
+        this.lvwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.lvwidget_tem2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_tem2.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.lvwidget_hum1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_hum1.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        this.lvwidget_hum2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_hum2.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+
+        this.gwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.gwidget_tem2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_tem2.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.gwidget_hum1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_hum1.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        this.gwidget_hum2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_hum2.setColorMap(DLI_PASTEL_HUM_COLORMAP);
 
         //gwidget_air_tvoc.setLineColor([0, 0, 255]);
         // this.gwidget_air_tvoc.setLineColorStyle(DLI_REL_MAP_COLOR);
@@ -60,28 +93,39 @@ class DesktopLayout{
 
     addToManager(widgetmanager){
         widgetmanager.addWidget(this.gwidget_air_temp, 0, 0)
-        widgetmanager.addWidget(this.gwidget_air_pres, 0, 2)
-        widgetmanager.addWidget(this.gwidget_air_humi, 0, 4)
-        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 6)
-        widgetmanager.addWidget(this.gwidget_air_tvoc, 0, 8)
+        widgetmanager.addWidget(this.gwidget_air_pres, 0, 4)
+        widgetmanager.addWidget(this.gwidget_air_humi, 0, 6)
+        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 8)
+        widgetmanager.addWidget(this.gwidget_air_tvoc, 5, 8)
         // gwidget_air_temp.setContinousSpline(true);
     
-        widgetmanager.addWidget(this.lvwidget_air_temp, 10, 2);
-        widgetmanager.addWidget(this.lvwidget_air_pres, 12, 2);
-        widgetmanager.addWidget(this.lvwidget_air_humi, 14, 2);
-        widgetmanager.addWidget(this.lvwidget_air_eco2, 16, 2);
-        widgetmanager.addWidget(this.lvwidget_air_tvoc, 18, 2);
+        widgetmanager.addWidget(this.lvwidget_air_temp, 10, 6);
+        widgetmanager.addWidget(this.lvwidget_air_pres, 12, 6);
+        widgetmanager.addWidget(this.lvwidget_air_humi, 14, 6);
+        widgetmanager.addWidget(this.lvwidget_air_eco2, 16, 6);
+        widgetmanager.addWidget(this.lvwidget_air_tvoc, 18, 6);
     
-        widgetmanager.addWidget(this.hwidget_air_temp, 10, 4);
-        widgetmanager.addWidget(this.hwidget_air_pres, 12, 4);
-        widgetmanager.addWidget(this.hwidget_air_humi, 14, 4);
-        widgetmanager.addWidget(this.hwidget_air_eco2, 16, 4);
-        widgetmanager.addWidget(this.hwidget_air_tvoc, 18, 4);
+        widgetmanager.addWidget(this.hwidget_air_temp, 10, 8);
+        widgetmanager.addWidget(this.hwidget_air_pres, 12, 8);
+        widgetmanager.addWidget(this.hwidget_air_humi, 14, 8);
+        widgetmanager.addWidget(this.hwidget_air_eco2, 16, 8);
+        widgetmanager.addWidget(this.hwidget_air_tvoc, 18, 8);
         
-        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 10, 0);
+        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 2);
+
+        
+        widgetmanager.addWidget(this.gwidget_tem1, 10, 0);
+        widgetmanager.addWidget(this.gwidget_tem2, 10, 2);
+        widgetmanager.addWidget(this.gwidget_hum1, 15, 0);
+        widgetmanager.addWidget(this.gwidget_hum2, 15, 2);
+        
+        widgetmanager.addWidget(this.lvwidget_tem1, 10, 4);
+        widgetmanager.addWidget(this.lvwidget_tem2, 12, 4);
+        widgetmanager.addWidget(this.lvwidget_hum1, 14, 4);
+        widgetmanager.addWidget(this.lvwidget_hum2, 16, 4);
     }
 
-    setupDatasource(dataSource){
+    setupDatasource(dataSource, dataSource2){
         dataSource.addObserver(this.gwidget_air_temp, 0);
         dataSource.addObserver(this.gwidget_air_pres, 1);
         dataSource.addObserver(this.gwidget_air_humi, 2);
@@ -103,5 +147,15 @@ class DesktopLayout{
         this.minmax_filter = new DataFilter_DayMinMax();
         dataSource.addObserver(this.minmax_filter, 0);
         this.minmax_filter.addObserver(this.ngwidget_air_temp_minmax);
+        
+        dataSource2.addObserver(this.gwidget_tem1, 1);
+        dataSource2.addObserver(this.gwidget_tem2, 3);
+        dataSource2.addObserver(this.gwidget_hum1, 0);
+        dataSource2.addObserver(this.gwidget_hum2, 2);
+        
+        dataSource2.addObserver(this.lvwidget_tem1, 1);
+        dataSource2.addObserver(this.lvwidget_tem2, 3);
+        dataSource2.addObserver(this.lvwidget_hum1, 0);
+        dataSource2.addObserver(this.lvwidget_hum2, 2);
     }
 }

@@ -35,10 +35,14 @@ function setup() {
     //dataSource_air.setupSource(48, "time", "from=2023-05-01 00:00:00&to=2024-12-31 23:59:59");
     //dataSource_air.setupSource(48, "top", "top=50000");
 
-    this.layout.setupDatasource(dataSource_air);
+    dataSource_temhum = new DataSource(server_url);
+    dataSource_temhum.setupSource(50, "top", "top=1440");
+
+    this.layout.setupDatasource(dataSource_air, dataSource_temhum);
 	
     sourceManager = new SourceManager();
     sourceManager.addSource(dataSource_air);
+    sourceManager.addSource(dataSource_temhum);
 }
 
 function createWidgetSize(gridSpanX, gridSpanY){
@@ -61,8 +65,11 @@ function windowResized() {
     this.layout.addToManager(manager);
     dataSource_air = new DataSource(server_url);
     dataSource_air.setupSource(48, "time", "from=2023-06-01 00:00:00&to=2024-12-31 23:59:59");
-    this.layout.setupDatasource(dataSource_air);
+    dataSource_temhum = new DataSource(server_url);
+    dataSource_temhum.setupSource(50, "time", "from=2023-06-01 00:00:00&to=2024-12-31 23:59:59");
+    this.layout.setupDatasource(dataSource_air, dataSource_temhum);
     sourceManager.reloadDescription();
     sourceManager = new SourceManager();
     sourceManager.addSource(dataSource_air);
+    sourceManager.addSource(dataSource_temhum);
 }

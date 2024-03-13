@@ -74,3 +74,7 @@ function componentToHex(c) {
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
+
+function hexToRgb(hex) {
+    return [Number("0x" + hex.slice(1, 3)), Number("0x" + hex.slice(3, 5)), Number("0x" + hex.slice(5, 7))];
+}

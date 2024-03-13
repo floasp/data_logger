@@ -14,6 +14,10 @@ class LatestValueWidget{
         this.unit = "";
         this.value = undefined;
         this.timestamp = undefined;
+
+        this.colorstyle = DLI_STATIC_COLOR;
+        this.color = DLI_TEXT_COLOR;
+        this.colormap = undefined;
     }
 
     // observer pattern, gets called by the observable
@@ -32,6 +36,21 @@ class LatestValueWidget{
         // this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);
+    }
+
+    setLineColorArr(color_array){
+        this.color = rgbToHex(color_array[0], color_array[1], color_array[2]);
+    }
+    setLineColor(color_hex_str){
+        this.color = color_hex_str;
+    }
+
+    setLineColorStyle(style){
+        this.colorstyle = style;
+    }
+
+    setColorMap(color_map){
+        this.colormap = color_map;
     }
 
     draw(offx, offy, mouse_x, mouse_y){
@@ -57,7 +76,15 @@ class LatestValueWidget{
                 fill(DLI_TEXT_SMALL_COLOR);
                 textSize(this.height / 10);
                 text(this.datatype, this.posx + this.width / 2 + offx, this.posy + this.height / 11 * 4  + offy);
-                fill(DLI_TEXT_COLOR);
+                
+                switch(this.colorstyle){
+                    case DLI_STATIC_COLOR:
+                        fill(this.color);
+                        break;
+                    case DLI_ABS_MAP_COLOR:
+                        fill(this.colormap.getColor(this.value));
+                        break;
+                }
                 textSize(this.height / 5);
                 text(this.trim_number_to_string(this.value) + " " + this.unit, this.posx + this.width / 2 + offx, this.posy + this.height / 5 * 3 + offy);
                 fill(DLI_TEXT_SMALL_COLOR);
