@@ -1,10 +1,10 @@
 class WidgetManager{
-    constructor(canSizex, canSizey, basesize){
-        const GRID_BASE_SIZE = basesize; // 200
-        const PADDING = basesize / 20; // 10
+    constructor(canSizex, canSizey){
+        // const GRID_BASE_SIZE = basesize; // 200
+        // const PADDING = basesize / 20; // 10
 
-        this.x_count = int(canSizex/GRID_BASE_SIZE);
-        this.y_count = int(canSizey/GRID_BASE_SIZE);
+        this.x_count = int(canSizex/GRID_BASE_SIZE_X);
+        this.y_count = int(canSizey/GRID_BASE_SIZE_Y);
 
         this.grid = new Array(this.x_count);
 
@@ -23,7 +23,7 @@ class WidgetManager{
             let xdiff = (gridx + sizex) - this.x_count;
             let ydiff = (gridy + sizey) - this.y_count;
             if(xdiff > 0){
-                resizeCanvas(width + xdiff * GRID_BASE_SIZE, height);
+                resizeCanvas(width + xdiff * GRID_BASE_SIZE_X, height);
                 for(let x = this.x_count; x < this.x_count + xdiff; x++){
                     this.grid[x] = [];
                     for(let y = 0; y < this.y_count; y++){
@@ -33,7 +33,7 @@ class WidgetManager{
                 this.x_count += xdiff;
             }
             if(ydiff > 0){
-                resizeCanvas(width, height + ydiff * GRID_BASE_SIZE);
+                resizeCanvas(width, height + ydiff * GRID_BASE_SIZE_Y);
                 for(let x = 0; x < this.x_count; x++){
                     for(let y = this.y_count; y < this.y_count + ydiff; y++){
                         this.grid[x][y] = new WidgetContainer();
@@ -93,16 +93,16 @@ class WidgetManager{
         }
     }
 
-    drawWidget(x, y, mouse_x, mouse_y){
+    drawWidget(x, y, mouse_x, mouse_y, offx, offy){
         if(this.grid[x][y].isWidget()){
-            this.grid[x][y].draw(GRID_BASE_SIZE * x, GRID_BASE_SIZE * y, mouse_x, mouse_y);
+            this.grid[x][y].draw(GRID_BASE_SIZE_X * x + offx, GRID_BASE_SIZE_Y * y + offy, mouse_x, mouse_y);
         }
     }
 
-    drawAll(mouse_x, mouse_y){
+    drawAll(mouse_x, mouse_y, offx, offy){
         for(let y = 0; y < this.y_count; y++){
             for(let x = 0; x < this.x_count; x++){
-                this.drawWidget(x, y, mouse_x, mouse_y);
+                this.drawWidget(x, y, mouse_x, mouse_y, offx, offy);
             }
         }
     }

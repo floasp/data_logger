@@ -51,6 +51,34 @@ class MobileLayout{
         this.hwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.gwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         this.hwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        
+        this.gwidget_tem1 = new GraphWidget(createWidgetSize(3, 2), undefined);
+        this.gwidget_tem2 = new GraphWidget(createWidgetSize(3, 2), undefined);
+        this.gwidget_hum1 = new GraphWidget(createWidgetSize(3, 2), undefined);
+        this.gwidget_hum2 = new GraphWidget(createWidgetSize(3, 2), undefined);
+        
+        this.lvwidget_tem1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_tem2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_hum1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_hum2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        
+        this.lvwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.lvwidget_tem2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_tem2.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.lvwidget_hum1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_hum1.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        this.lvwidget_hum2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.lvwidget_hum2.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+
+        this.gwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.gwidget_tem2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_tem2.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
+        this.gwidget_hum1.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_hum1.setColorMap(DLI_PASTEL_HUM_COLORMAP);
+        this.gwidget_hum2.setLineColorStyle(DLI_ABS_MAP_COLOR);
+        this.gwidget_hum2.setColorMap(DLI_PASTEL_HUM_COLORMAP);
     }
 
     addToManager(widgetmanager){
@@ -74,9 +102,19 @@ class MobileLayout{
         widgetmanager.addWidget(this.hwidget_air_tvoc, 8, 10);
         
         widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 12);
+
+        widgetmanager.addWidget(this.gwidget_tem1, 0, 14);
+        widgetmanager.addWidget(this.gwidget_tem2, 3, 14);
+        widgetmanager.addWidget(this.gwidget_hum1, 0, 16);
+        widgetmanager.addWidget(this.gwidget_hum2, 3, 16);
+        
+        widgetmanager.addWidget(this.lvwidget_tem1, 6, 14);
+        widgetmanager.addWidget(this.lvwidget_tem2, 8, 14);
+        widgetmanager.addWidget(this.lvwidget_hum1, 6, 16);
+        widgetmanager.addWidget(this.lvwidget_hum2, 8, 16);
     }
 
-    setupDatasource(dataSource){
+    setupDatasource(dataSource, dataSource2){
         dataSource.addObserver(this.gwidget_air_temp, 0);
         dataSource.addObserver(this.gwidget_air_pres, 1);
         dataSource.addObserver(this.gwidget_air_humi, 2);
@@ -98,5 +136,15 @@ class MobileLayout{
         this.minmax_filter = new DataFilter_DayMinMax();
         dataSource.addObserver(this.minmax_filter, 0);
         this.minmax_filter.addObserver(this.ngwidget_air_temp_minmax);
+        
+        dataSource2.addObserver(this.gwidget_tem1, 1);
+        dataSource2.addObserver(this.gwidget_tem2, 3);
+        dataSource2.addObserver(this.gwidget_hum1, 0);
+        dataSource2.addObserver(this.gwidget_hum2, 2);
+        
+        dataSource2.addObserver(this.lvwidget_tem1, 1);
+        dataSource2.addObserver(this.lvwidget_tem2, 3);
+        dataSource2.addObserver(this.lvwidget_hum1, 0);
+        dataSource2.addObserver(this.lvwidget_hum2, 2);
     }
 }
