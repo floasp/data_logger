@@ -1,29 +1,29 @@
 class DesktopLayout{
     constructor(){
-        this.gwidget_air_temp = new GraphWidget(createWidgetSize(10, 2), undefined);
-        this.gwidget_air_pres = new GraphWidget(createWidgetSize(10, 2), undefined);
-        this.gwidget_air_humi = new GraphWidget(createWidgetSize(10, 2), undefined);
-        this.gwidget_air_eco2 = new GraphWidget(createWidgetSize(5, 2), undefined);
-        this.gwidget_air_tvoc = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_air_temp = new GraphWidget();
+        this.gwidget_air_pres = new GraphWidget();
+        this.gwidget_air_humi = new GraphWidget();
+        this.gwidget_air_eco2 = new GraphWidget();
+        this.gwidget_air_tvoc = new GraphWidget();
         
-        this.ngwidget_air_temp_minmax = new NGraphWidget(createWidgetSize(10, 2), undefined);
+        this.ngwidget_air_temp_minmax = new NGraphWidget();
     
-        this.lvwidget_air_temp = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_pres = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_humi = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_eco2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_tvoc = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_air_temp = new LatestValueWidget();
+        this.lvwidget_air_pres = new LatestValueWidget();
+        this.lvwidget_air_humi = new LatestValueWidget();
+        this.lvwidget_air_eco2 = new LatestValueWidget();
+        this.lvwidget_air_tvoc = new LatestValueWidget();
 
         this.lvwidget_air_temp.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.lvwidget_air_temp.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
         this.lvwidget_air_humi.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.lvwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
     
-        this.hwidget_air_temp = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_pres = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_humi = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_eco2 = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_tvoc = new HistogramWidget(createWidgetSize(2, 2), undefined);
+        this.hwidget_air_temp = new HistogramWidget();
+        this.hwidget_air_pres = new HistogramWidget();
+        this.hwidget_air_humi = new HistogramWidget();
+        this.hwidget_air_eco2 = new HistogramWidget();
+        this.hwidget_air_tvoc = new HistogramWidget();
         this.hwidget_air_temp.setIntervals(20);
         this.hwidget_air_pres.setIntervalsWithLimit(111000, 117000, 10);
         this.hwidget_air_humi.setIntervalsWithLimit(0, 100, 20);
@@ -53,15 +53,15 @@ class DesktopLayout{
         this.gwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         this.hwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         
-        this.gwidget_tem1 = new GraphWidget(createWidgetSize(5, 2), undefined);
-        this.gwidget_tem2 = new GraphWidget(createWidgetSize(5, 2), undefined);
-        this.gwidget_hum1 = new GraphWidget(createWidgetSize(5, 2), undefined);
-        this.gwidget_hum2 = new GraphWidget(createWidgetSize(5, 2), undefined);
+        this.gwidget_tem1 = new GraphWidget();
+        this.gwidget_tem2 = new GraphWidget();
+        this.gwidget_hum1 = new GraphWidget();
+        this.gwidget_hum2 = new GraphWidget();
         
-        this.lvwidget_tem1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_tem2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_hum1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_hum2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_tem1 = new LatestValueWidget();
+        this.lvwidget_tem2 = new LatestValueWidget();
+        this.lvwidget_hum1 = new LatestValueWidget();
+        this.lvwidget_hum2 = new LatestValueWidget();
         
         this.lvwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.lvwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
@@ -92,37 +92,42 @@ class DesktopLayout{
     }
 
     addToManager(widgetmanager){
-        widgetmanager.addWidget(this.gwidget_air_temp, 0, 0)
-        widgetmanager.addWidget(this.gwidget_air_pres, 0, 4)
-        widgetmanager.addWidget(this.gwidget_air_humi, 0, 6)
-        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 8)
-        widgetmanager.addWidget(this.gwidget_air_tvoc, 5, 8)
+        widgetmanager.addWidget(this.gwidget_air_temp, 0, 0, 10, 2)
+        widgetmanager.addWidget(this.gwidget_air_pres, 0, 4, 10, 2)
+        widgetmanager.addWidget(this.gwidget_air_humi, 0, 6, 10, 2)
+        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 8, 5, 2)
+        widgetmanager.addWidget(this.gwidget_air_tvoc, 5, 8, 5, 2)
         // gwidget_air_temp.setContinousSpline(true);
     
-        widgetmanager.addWidget(this.lvwidget_air_temp, 10, 6);
-        widgetmanager.addWidget(this.lvwidget_air_pres, 12, 6);
-        widgetmanager.addWidget(this.lvwidget_air_humi, 14, 6);
-        widgetmanager.addWidget(this.lvwidget_air_eco2, 16, 6);
-        widgetmanager.addWidget(this.lvwidget_air_tvoc, 18, 6);
+        widgetmanager.addWidget(this.lvwidget_air_temp, 10, 6, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_pres, 12, 6, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_humi, 14, 6, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_eco2, 16, 6, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_tvoc, 18, 6, 2, 2);
     
-        widgetmanager.addWidget(this.hwidget_air_temp, 10, 8);
-        widgetmanager.addWidget(this.hwidget_air_pres, 12, 8);
-        widgetmanager.addWidget(this.hwidget_air_humi, 14, 8);
-        widgetmanager.addWidget(this.hwidget_air_eco2, 16, 8);
-        widgetmanager.addWidget(this.hwidget_air_tvoc, 18, 8);
+        widgetmanager.addWidget(this.hwidget_air_temp, 10, 8, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_pres, 12, 8, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_humi, 14, 8, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_eco2, 16, 8, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_tvoc, 18, 8, 2, 2);
         
-        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 2);
+        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 2, 10, 2);
 
         
-        widgetmanager.addWidget(this.gwidget_tem1, 10, 0);
-        widgetmanager.addWidget(this.gwidget_tem2, 10, 2);
-        widgetmanager.addWidget(this.gwidget_hum1, 15, 0);
-        widgetmanager.addWidget(this.gwidget_hum2, 15, 2);
+        widgetmanager.addWidget(this.gwidget_tem1, 10, 0, 5, 2);
+        widgetmanager.addWidget(this.gwidget_tem2, 10, 2, 5, 2);
+        widgetmanager.addWidget(this.gwidget_hum1, 15, 0, 5, 2);
+        widgetmanager.addWidget(this.gwidget_hum2, 15, 2, 5, 2);
         
-        widgetmanager.addWidget(this.lvwidget_tem1, 10, 4);
-        widgetmanager.addWidget(this.lvwidget_tem2, 12, 4);
-        widgetmanager.addWidget(this.lvwidget_hum1, 14, 4);
-        widgetmanager.addWidget(this.lvwidget_hum2, 16, 4);
+        widgetmanager.addWidget(this.lvwidget_tem1, 10, 4, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_tem2, 12, 4, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_hum1, 14, 4, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_hum2, 16, 4, 2, 2);
+    }
+
+    clearDataSources(dataSource, dataSource2){
+        dataSource.clearObservers();
+        dataSource2.clearObservers();
     }
 
     setupDatasource(dataSource, dataSource2){

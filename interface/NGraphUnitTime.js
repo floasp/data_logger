@@ -7,7 +7,6 @@ class NGraphUnitTime{
         this.posy = posy;
         this.width = width;
         this.height = height;
-        this.gridPos = undefined;
         this.data = undefined;
         this.datamin = undefined;
         this.datamax = undefined;
@@ -18,6 +17,13 @@ class NGraphUnitTime{
         this.line_color = [0, 255, 255];
         this.line_color_style = DLI_STATIC_COLOR;
         this.color_map = undefined;
+    }
+
+    resize(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
     }
 
 	// set every parameter as an array of individual values 

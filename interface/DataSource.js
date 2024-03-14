@@ -50,6 +50,10 @@ class DataSource{
             this.observers[i].notify(this.timestamps, this.values[this.observerDataIndexes[i]], this.name, this.datatypes[i], this.units[i], this.typenames[this.observerDataIndexes[i]]);
         }
     }
+    clearObservers(){
+        this.observers = [];
+        this.observerDataIndexes = [];
+    }
 
     getDescription(){
 

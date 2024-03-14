@@ -43,6 +43,12 @@ function date_to_array(datetime){
     return [year_int, month_int, day_int, h_int, m_int, s_int];
 }
 
+function createWidgetSize(gridSpanX, gridSpanY){
+    let widgetWidth = GRID_BASE_SIZE_X - 2 * PADDING;
+    let widgetHeight = GRID_BASE_SIZE_Y - 2 * PADDING;
+    return [PADDING, PADDING, widgetWidth + (gridSpanX-1) * GRID_BASE_SIZE_X, widgetHeight + (gridSpanY-1) * GRID_BASE_SIZE_Y]
+}
+
 // timestamps is an array of strings formatted in the SQL DATETIME Format
 function getMinMaxDate(timestamps){
     mindate = datetime_to_int(timestamps[0]);

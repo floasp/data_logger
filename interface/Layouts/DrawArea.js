@@ -12,4 +12,13 @@ class DrawArea{
         noStroke();
         this.widgetManager.drawAll(mousex, mousey, this.xpos, this.ypos);
     }
+
+    resize(xpos, ypos, width, height){
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.width = width;
+        this.height = height;
+
+        this.widgetManager.resize();
+    }
 }

@@ -1,12 +1,9 @@
 class NGraphWidget{
-    constructor(pos_array, data){
-        this.posx = pos_array[0];
-        this.posy = pos_array[1];
-        this.width = pos_array[2];
-        this.height = pos_array[3];
-        this.gridSpanX = pos_array[4];
-        this.gridSpanY = pos_array[5];
-        this.gridPos = undefined;
+    constructor(){
+        this.posx = 0;
+        this.posy = 0;
+        this.width = 0;
+        this.height = 0;
         this.updatePending = true;
         this.name = "";
         this.datatype = "";
@@ -18,7 +15,15 @@ class NGraphWidget{
         this.prev_mouseY = 0;
 
         this.graph = new NGraphUnitTime(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
-        this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
+    }
+
+    resize(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
+
+        this.graph.resize(this.posx + 20, this.posy + 20, this.width - 40, this.height - 40);
     }
 
     // observer pattern, gets called by the observable

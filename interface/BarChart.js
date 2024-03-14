@@ -5,7 +5,6 @@ class BarChart{
         this.posy = posy;
         this.width = width;
         this.height = height;
-        this.gridPos = undefined;
         this.data = undefined;
         this.datamin = undefined;
         this.datamax = undefined;
@@ -17,6 +16,13 @@ class BarChart{
         this.line_color_style = DLI_STATIC_COLOR;
         this.color_map = undefined;
         this.orientation = "horizontal";
+    }
+
+    resize(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
     }
 	
     setOrientation(orientation){

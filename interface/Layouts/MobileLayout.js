@@ -1,30 +1,24 @@
 class MobileLayout{
     constructor(){
-        // gwidget_air_temp = new GraphWidget(createWidgetSize(3, 2), undefined);
-        // gwidget_air_pres = new GraphWidget(createWidgetSize(3, 2), undefined);
-        // gwidget_air_humi = new GraphWidget(createWidgetSize(3, 2), undefined);
-        // gwidget_air_eco2 = new GraphWidget(createWidgetSize(3, 2), undefined);
-        // gwidget_air_tvoc = new GraphWidget(createWidgetSize(3, 2), undefined);
-    
-        this.gwidget_air_temp = new GraphWidget(createWidgetSize(8, 2), undefined);
-        this.gwidget_air_pres = new GraphWidget(createWidgetSize(8, 2), undefined);
-        this.gwidget_air_humi = new GraphWidget(createWidgetSize(8, 2), undefined);
-        this.gwidget_air_eco2 = new GraphWidget(createWidgetSize(8, 2), undefined);
-        this.gwidget_air_tvoc = new GraphWidget(createWidgetSize(8, 2), undefined);
+        this.gwidget_air_temp = new GraphWidget();
+        this.gwidget_air_pres = new GraphWidget();
+        this.gwidget_air_humi = new GraphWidget();
+        this.gwidget_air_eco2 = new GraphWidget();
+        this.gwidget_air_tvoc = new GraphWidget();
         
-        this.ngwidget_air_temp_minmax = new NGraphWidget(createWidgetSize(8, 2), undefined);
+        this.ngwidget_air_temp_minmax = new NGraphWidget();
     
-        this.lvwidget_air_temp = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_pres = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_humi = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_eco2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_air_tvoc = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_air_temp = new LatestValueWidget();
+        this.lvwidget_air_pres = new LatestValueWidget();
+        this.lvwidget_air_humi = new LatestValueWidget();
+        this.lvwidget_air_eco2 = new LatestValueWidget();
+        this.lvwidget_air_tvoc = new LatestValueWidget();
     
-        this.hwidget_air_temp = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_pres = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_humi = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_eco2 = new HistogramWidget(createWidgetSize(2, 2), undefined);
-        this.hwidget_air_tvoc = new HistogramWidget(createWidgetSize(2, 2), undefined);
+        this.hwidget_air_temp = new HistogramWidget();
+        this.hwidget_air_pres = new HistogramWidget();
+        this.hwidget_air_humi = new HistogramWidget();
+        this.hwidget_air_eco2 = new HistogramWidget();
+        this.hwidget_air_tvoc = new HistogramWidget();
         this.hwidget_air_temp.setIntervals(20);
         this.hwidget_air_pres.setIntervalsWithLimit(111000, 117000, 10);
         this.hwidget_air_humi.setIntervalsWithLimit(0, 100, 20);
@@ -52,15 +46,15 @@ class MobileLayout{
         this.gwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         this.hwidget_air_humi.setColorMap(DLI_PASTEL_HUM_COLORMAP);
         
-        this.gwidget_tem1 = new GraphWidget(createWidgetSize(3, 2), undefined);
-        this.gwidget_tem2 = new GraphWidget(createWidgetSize(3, 2), undefined);
-        this.gwidget_hum1 = new GraphWidget(createWidgetSize(3, 2), undefined);
-        this.gwidget_hum2 = new GraphWidget(createWidgetSize(3, 2), undefined);
+        this.gwidget_tem1 = new GraphWidget();
+        this.gwidget_tem2 = new GraphWidget();
+        this.gwidget_hum1 = new GraphWidget();
+        this.gwidget_hum2 = new GraphWidget();
         
-        this.lvwidget_tem1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_tem2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_hum1 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
-        this.lvwidget_hum2 = new LatestValueWidget(createWidgetSize(2, 2), undefined);
+        this.lvwidget_tem1 = new LatestValueWidget();
+        this.lvwidget_tem2 = new LatestValueWidget();
+        this.lvwidget_hum1 = new LatestValueWidget();
+        this.lvwidget_hum2 = new LatestValueWidget();
         
         this.lvwidget_tem1.setLineColorStyle(DLI_ABS_MAP_COLOR);
         this.lvwidget_tem1.setColorMap(DLI_PASTEL_TEMP_COLORMAP);
@@ -82,36 +76,41 @@ class MobileLayout{
     }
 
     addToManager(widgetmanager){
-        widgetmanager.addWidget(this.gwidget_air_temp, 0, 2)
-        widgetmanager.addWidget(this.gwidget_air_pres, 0, 4)
-        widgetmanager.addWidget(this.gwidget_air_humi, 0, 6)
-        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 8)
-        widgetmanager.addWidget(this.gwidget_air_tvoc, 0, 10)
+        widgetmanager.addWidget(this.gwidget_air_temp, 0, 2, 8, 2)
+        widgetmanager.addWidget(this.gwidget_air_pres, 0, 4, 8, 2)
+        widgetmanager.addWidget(this.gwidget_air_humi, 0, 6, 8, 2)
+        widgetmanager.addWidget(this.gwidget_air_eco2, 0, 8, 8, 2)
+        widgetmanager.addWidget(this.gwidget_air_tvoc, 0, 10, 8, 2)
         // gwidget_air_temp.setContinousSpline(true);
     
-        widgetmanager.addWidget(this.lvwidget_air_temp, 0, 0);
-        widgetmanager.addWidget(this.lvwidget_air_pres, 2, 0);
-        widgetmanager.addWidget(this.lvwidget_air_humi, 4, 0);
-        widgetmanager.addWidget(this.lvwidget_air_eco2, 6, 0);
-        widgetmanager.addWidget(this.lvwidget_air_tvoc, 8, 0);
+        widgetmanager.addWidget(this.lvwidget_air_temp, 0, 0, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_pres, 2, 0, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_humi, 4, 0, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_eco2, 6, 0, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_air_tvoc, 8, 0, 2, 2);
     
-        widgetmanager.addWidget(this.hwidget_air_temp, 8, 2);
-        widgetmanager.addWidget(this.hwidget_air_pres, 8, 4);
-        widgetmanager.addWidget(this.hwidget_air_humi, 8, 6);
-        widgetmanager.addWidget(this.hwidget_air_eco2, 8, 8);
-        widgetmanager.addWidget(this.hwidget_air_tvoc, 8, 10);
+        widgetmanager.addWidget(this.hwidget_air_temp, 8, 2, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_pres, 8, 4, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_humi, 8, 6, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_eco2, 8, 8, 2, 2);
+        widgetmanager.addWidget(this.hwidget_air_tvoc, 8, 10, 2, 2);
         
-        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 12);
+        widgetmanager.addWidget(this.ngwidget_air_temp_minmax, 0, 12, 8, 2);
 
-        widgetmanager.addWidget(this.gwidget_tem1, 0, 14);
-        widgetmanager.addWidget(this.gwidget_tem2, 3, 14);
-        widgetmanager.addWidget(this.gwidget_hum1, 0, 16);
-        widgetmanager.addWidget(this.gwidget_hum2, 3, 16);
+        widgetmanager.addWidget(this.gwidget_tem1, 0, 14, 3, 2);
+        widgetmanager.addWidget(this.gwidget_tem2, 3, 14, 3, 2);
+        widgetmanager.addWidget(this.gwidget_hum1, 0, 16, 3, 2);
+        widgetmanager.addWidget(this.gwidget_hum2, 3, 16, 3, 2);
         
-        widgetmanager.addWidget(this.lvwidget_tem1, 6, 14);
-        widgetmanager.addWidget(this.lvwidget_tem2, 8, 14);
-        widgetmanager.addWidget(this.lvwidget_hum1, 6, 16);
-        widgetmanager.addWidget(this.lvwidget_hum2, 8, 16);
+        widgetmanager.addWidget(this.lvwidget_tem1, 6, 14, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_tem2, 8, 14, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_hum1, 6, 16, 2, 2);
+        widgetmanager.addWidget(this.lvwidget_hum2, 8, 16, 2, 2);
+    }
+
+    clearDataSources(dataSource, dataSource2){
+        dataSource.clearObservers();
+        dataSource2.clearObservers();
     }
 
     setupDatasource(dataSource, dataSource2){

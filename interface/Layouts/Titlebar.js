@@ -17,4 +17,11 @@ class Titlebar{
         fill(DLI_TEXT_COLOR);
         text(this.title, this.xpos + 3*PADDING, this.ypos + this.height / 2);
     }
+
+    resize(xpos, ypos, width, height){
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.width = width;
+        this.height = height;
+    }
 }

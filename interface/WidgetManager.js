@@ -1,24 +1,30 @@
+
 class WidgetManager{
-    constructor(canSizex, canSizey){
+    constructor(){
         // const GRID_BASE_SIZE = basesize; // 200
         // const PADDING = basesize / 20; // 10
 
-        this.x_count = int(canSizex/GRID_BASE_SIZE_X);
-        this.y_count = int(canSizey/GRID_BASE_SIZE_Y);
+        this.x_count = GRID_NCOLS;
+        this.y_count = GRID_NROWS;
 
         this.grid = new Array(this.x_count);
 
         for(let x = 0; x < this.x_count; x++){
             this.grid[x] = [];
             for(let y = 0; y < this.y_count; y++){
-                this.grid[x][y] = new WidgetContainer();
+                this.grid[x][y] = new WidgetContainer(x, y, 1, 1);
             }
         }
     }
 
-    addWidget(widget, gridx, gridy){
-        let sizex = widget.gridSpanX;
-        let sizey = widget.gridSpanY;
+    addWidget(widget, gridx, gridy, gridsizex, gridsizey){
+        let sizex = gridsizex;
+        let sizey = gridsizey;
+
+        let widgetSize = createWidgetSize(sizex, sizey);
+        widget.resize(widgetSize[0], widgetSize[1], widgetSize[2], widgetSize[3]);
+
+        // resize grid if widget is out of current bounds
         if(gridx >= 0 && gridy >= 0){
             let xdiff = (gridx + sizex) - this.x_count;
             let ydiff = (gridy + sizey) - this.y_count;
@@ -27,7 +33,7 @@ class WidgetManager{
                 for(let x = this.x_count; x < this.x_count + xdiff; x++){
                     this.grid[x] = [];
                     for(let y = 0; y < this.y_count; y++){
-                        this.grid[x][y] = new WidgetContainer();
+                        this.grid[x][y] = new WidgetContainer(x, y, 1, 1);
                     }
                 }
                 this.x_count += xdiff;
@@ -36,7 +42,7 @@ class WidgetManager{
                 resizeCanvas(width, height + ydiff * GRID_BASE_SIZE_Y);
                 for(let x = 0; x < this.x_count; x++){
                     for(let y = this.y_count; y < this.y_count + ydiff; y++){
-                        this.grid[x][y] = new WidgetContainer();
+                        this.grid[x][y] = new WidgetContainer(x, y, 1, 1);
                     }
                 }
                 this.y_count += ydiff;
@@ -45,6 +51,8 @@ class WidgetManager{
         if(gridx >= 0 && gridy >= 0 && gridx + sizex - 1 < this.x_count && gridy + sizey - 1 < this.y_count){
             if(this.grid[gridx][gridy].isFree()){
                 if(sizex == 1 && sizey == 1){
+                    this.grid[gridx][gridy].gw = sizex;
+                    this.grid[gridx][gridy].gh = sizey;
                     this.grid[gridx][gridy].widget = widget;
                 }
                 else{
@@ -61,6 +69,8 @@ class WidgetManager{
                                 this.grid[gridx + x][gridy + y].setReserved();
                             }
                         }
+                        this.grid[gridx][gridy].gw = sizex;
+                        this.grid[gridx][gridy].gh = sizey;
                         this.grid[gridx][gridy].widget = widget;
                     }
                     else{
@@ -107,8 +117,12 @@ class WidgetManager{
         }
     }
 
-    windowResize(canSizex, canSizey){
-
+    resize(){
+        for(let y = 0; y < this.y_count; y++){
+            for(let x = 0; x < this.x_count; x++){
+                this.grid[x][y].resize();
+            }
+        }
     }
 
     clearWidgets(){
@@ -121,9 +135,21 @@ class WidgetManager{
 }
 
 class WidgetContainer{
-    constructor(){
+    constructor(gx, gy, gw, gh){
         this.widget = undefined;
         this.reserved = false;
+        this.gx = gx;
+        this.gy = gy;
+        this.gw = gw;
+        this.gh = gh;
+    }
+    
+    resize(){
+        if (this.widget != undefined){
+            let widgetSize = createWidgetSize(this.gw, this.gh);
+            this.widget.resize(widgetSize[0], widgetSize[1], widgetSize[2], widgetSize[3]);
+            this.widget.updatePending = true;
+        }
     }
 
     isFree(){
@@ -142,6 +168,8 @@ class WidgetContainer{
     setFree(){
         this.reserved = false;
         this.widget = undefined;
+        this.gw = 1;
+        this.gh = 1;
     }
 
     draw(offx, offy, mouse_x, mouse_y){

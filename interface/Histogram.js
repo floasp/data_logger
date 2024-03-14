@@ -4,7 +4,6 @@ class Histogram{
 		this.posy = posy;
 		this.width = width;
 		this.height = height;
-		this.gridPos = undefined;
 		this.unit = "";
 		
 		this.originalData = undefined;
@@ -16,6 +15,15 @@ class Histogram{
 		
 		this.barchart = new BarChart(this.posx, this.posy, this.width, this.height);
 	}
+
+    resize(posx, posy, width, height){
+        this.posx = posx;
+        this.posy = posy;
+        this.width = width;
+        this.height = height;
+
+		this.barchart.resize(this.posx, this.posy, this.width, this.height);
+    }
 	
     setOrientation(orientation){
         this.barchart.setOrientation(orientation);
