@@ -67,16 +67,12 @@ function setup() {
     frameRate(10);
 
     calculateSizes(windowWidth, windowHeight);
-
     createCanvas(fullWidth, fullHeight);
 
     titlebar = new Titlebar(0, 0, titleWidth, titleHeight, "Data-Logger Interface");
-
     manager = new WidgetManager(drawWidth, drawHeight, GRID_BASE_SIZE_X, GRID_BASE_SIZE_Y);
-    
     drawArea = new DrawArea(0, titleHeight, drawWidth, drawHeight, manager);
 
-    // layout = new DesktopLayout();
     layout.addToManager(manager);
 
     server_url = "server url";
