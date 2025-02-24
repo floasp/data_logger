@@ -35,13 +35,13 @@ function calculateSizes(windowWidth, windowHeight){
         GRID_BASE_SIZE_X = Math.floor(drawWidth / GRID_NCOLS);
         GRID_BASE_SIZE_Y = Math.floor(drawHeight / GRID_NROWS);
         PADDING = GRID_BASE_SIZE_X / 20;
-        if (layout instanceof DesktopLayout){
+        if (layout instanceof DesktopLayout_new){
             layoutchange = false;
         }
         else{
             layoutchange = true;
         }
-        layout = new DesktopLayout();
+        layout = new DesktopLayout_new();
     }
     else{
         titleHeight = fullWidth / 20;
@@ -52,13 +52,13 @@ function calculateSizes(windowWidth, windowHeight){
         GRID_BASE_SIZE_X = Math.floor(drawWidth / GRID_NCOLS);
         GRID_BASE_SIZE_Y = Math.floor(drawHeight / GRID_NROWS);
         PADDING = GRID_BASE_SIZE_X / 20;
-        if (layout instanceof MobileLayout){
+        if (layout instanceof MobileLayout_new){
             layoutchange = false;
         }
         else{
             layoutchange = true;
         }
-        layout = new MobileLayout();
+        layout = new MobileLayout_new();
     }
 }
 
@@ -77,18 +77,12 @@ function setup() {
 
     server_url = "server url";
 
-    dataSource_air = new DataSource(server_url);
-    dataSource_air.setupSource(48, "time", "from=2023-06-01 00:00:00&to=2024-12-31 23:59:59");
-    //dataSource_air.setupSource(48, "time", "from=2023-05-01 00:00:00&to=2024-12-31 23:59:59");
-    //dataSource_air.setupSource(48, "top", "top=50000");
-
     dataSource_temhum = new DataSource(server_url);
-    dataSource_temhum.setupSource(50, "top", "top=1440");
+    dataSource_temhum.setupSource(52, "top", "top=1440");
 
-    layout.setupDatasource(dataSource_air, dataSource_temhum);
+    layout.setupDatasource(dataSource_temhum);
 	
     sourceManager = new SourceManager();
-    sourceManager.addSource(dataSource_air);
     sourceManager.addSource(dataSource_temhum);
 }
 
@@ -107,8 +101,8 @@ function windowResized() {
     if(layoutchange){
         manager.clearWidgets();
         layout.addToManager(manager);
-        layout.clearDataSources(dataSource_air, dataSource_temhum);
-        layout.setupDatasource(dataSource_air, dataSource_temhum);
+        layout.clearDataSources(dataSource_temhum);
+        layout.setupDatasource(dataSource_temhum);
     }
 
     titlebar.resize(0, 0, titleWidth, titleHeight);

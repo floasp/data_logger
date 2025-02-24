@@ -30,13 +30,15 @@ class LatestValueWidget{
         this.datatype = datatype;
         this.typename = typename;
         this.unit = unit;
-        this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
+        //this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
         this.axeNameY = datatype;
-        let data = [timestamps, values];
+        //let data = [timestamps, values];
         if(values != undefined){
             this.value = values[values.length - 1];
         }
-        this.timestamp = timestamps[timestamps.length - 1];
+        
+        let datetimestring = dateTimeToLocale(timestamps[timestamps.length - 1]);
+        this.timestamp = datetimestring;
         // this.graph.setData(data, this.axeNameX, this.axeNameY, this.unit);
         this.updatePending = true;
         //console.log([timestamps, values]);

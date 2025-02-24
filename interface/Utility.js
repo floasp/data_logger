@@ -84,3 +84,12 @@ function rgbToHex(r, g, b) {
 function hexToRgb(hex) {
     return [Number("0x" + hex.slice(1, 3)), Number("0x" + hex.slice(3, 5)), Number("0x" + hex.slice(5, 7))];
 }
+
+function dateTimeToLocale(timestamp){
+    let date = new Date(timestamp + " UTC");
+    let datestring = date.toLocaleDateString("de-DE");
+    let timestring = date.toLocaleTimeString("de-DE");
+    let datetimestring = datestring + " " + timestring;
+
+    return datetimestring;
+}

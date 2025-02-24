@@ -32,7 +32,11 @@ class NGraphWidget{
         this.datatype = datatype;
         this.typename = typename;
         this.unit = unit;
-        this.axeNameX = timestamps[0] + " - " + timestamps[timestamps.length-1];
+
+        let datetimestringstart = dateTimeToLocale(timestamps[0]);
+        let datetimestringend = dateTimeToLocale(timestamps[timestamps.length-1]);
+
+        this.axeNameX = datetimestringstart + " - " + datetimestringend;
         this.axeNameY = datatype;
 		
         let data = [timestamps];
